@@ -4,101 +4,101 @@
 {% block title %}My Profile - CineMagic{% endblock %}
 
 {% block content %}
-<section class="profile-section py-5 mt-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="card bg-dark">
-                    <div class="card-body text-center">
-                        <div class="profile-avatar mb-4">
-                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="rounded-circle img-fluid profile-img">
-                        </div>
-                        <h3 class="profile-name mb-2">{{ user.username }}</h3>
-                        <p class="text-muted mb-3">{{ user.email }}</p>
-                        
-                        <div class="profile-stats d-flex justify-content-around mb-3">
-                            <div class="stat-item">
-                                <h5 class="mb-0">{{ user.watchlist.count }}</h5>
-                                <small class="text-muted">Watchlist</small>
+    <section class="profile-section py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card bg-dark">
+                        <div class="card-body text-center">
+                            <div class="profile-avatar mb-4">
+                                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="rounded-circle img-fluid profile-img">
                             </div>
-                            <div class="stat-item">
-                                <h5 class="mb-0">{{ user.ratings.count }}</h5>
-                                <small class="text-muted">Ratings</small>
+                            <h3 class="profile-name mb-2">{{ user.username }}</h3>
+                            <p class="text-muted mb-3">{{ user.email }}</p>
+
+                            <div class="profile-stats d-flex justify-content-around mb-3">
+                                <div class="stat-item">
+                                    <h5 class="mb-0">{{ user.watchlist.count }}</h5>
+                                    <small class="text-muted">Watchlist</small>
+                                </div>
+                                <div class="stat-item">
+                                    <h5 class="mb-0">{{ user.ratings.count }}</h5>
+                                    <small class="text-muted">Ratings</small>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="profile-bio mb-3">
-                            <p>{{ user.profile.bio|default:"No bio yet." }}</p>
-                        </div>
-                        
-                        <div class="profile-actions">
-                            <a href="{% url 'watchlist' %}" class="btn btn-outline-primary me-2">
-                                <i class="fas fa-heart me-1"></i> My Watchlist
-                            </a>
-                            <a href="{% url 'settings' %}" class="btn btn-outline-light">
-                                <i class="fas fa-cog me-1"></i> Settings
-                            </a>
+
+                            <div class="profile-bio mb-3">
+                                <p>{{ user.profile.bio|default:"No bio yet." }}</p>
+                            </div>
+
+                            <div class="profile-actions">
+                                <a href="{% url 'watchlist' %}" class="btn btn-outline-primary me-2">
+                                    <i class="fas fa-heart me-1"></i> My Watchlist
+                                </a>
+                                <a href="{% url 'user_settings' %}" class="btn btn-outline-light">
+                                    <i class="fas fa-cog me-1"></i> Settings
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-lg-8">
-                <div class="card bg-dark mb-4">
-                    <div class="card-header">
-                        <h4 class="mb-0">Edit Profile</h4>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    {{ u_form.username|as_crispy_field }}
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    {{ u_form.email|as_crispy_field }}
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    {{ u_form.first_name|as_crispy_field }}
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    {{ u_form.last_name|as_crispy_field }}
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                {{ p_form.avatar|as_crispy_field }}
-                            </div>
-                            
-                            <div class="mb-3">
-                                {{ p_form.bio|as_crispy_field }}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Favorite Genres</label>
+
+                <div class="col-lg-8">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header">
+                            <h4 class="mb-0">Edit Profile</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
                                 <div class="row">
-                                    {% for checkbox in p_form.favorite_genres %}
-                                        <div class="col-md-4 mb-2">
-                                            {{ checkbox }}
-                                        </div>
-                                    {% endfor %}
+                                    <div class="col-md-6 mb-3">
+                                        {{ u_form.username|as_crispy_field }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ u_form.email|as_crispy_field }}
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i>Save Changes
-                                </button>
-                            </div>
-                        </form>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ u_form.first_name|as_crispy_field }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ u_form.last_name|as_crispy_field }}
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ form.avatar|as_crispy_field }}
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ form.bio|as_crispy_field }}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Favorite Genres</label>
+                                    <div class="row">
+                                        {% for checkbox in form.favorite_genres %}
+                                            <div class="col-md-4 mb-2">
+                                                {{ checkbox }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
