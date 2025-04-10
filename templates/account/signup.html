@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Ro'yxatdan o'tish - UZMOVI.ASIA{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h1 class="auth-title">Ro'yhatdan o'tish</h1>
+        <p class="auth-subtitle">Ro'yhatdan o'tish uchun quyidagilarni kiriting</p>
+        
+        <form class="auth-form" method="POST" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="auth-errors">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Ism" required class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <input type="email" name="email" placeholder="E-mail" required class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password1" placeholder="Parol yarating" required class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password2" placeholder="Parolni tasdiqlang" required class="form-control">
+            </div>
+            
+            <button type="submit" class="auth-button">Kirish</button>
+            
+            <div class="auth-links">
+                <a href="{% url 'account_login' %}" class="login-link">Kirish</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

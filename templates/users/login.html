@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Sign In - CineMagic{% endblock %}
+
+{% block content %}
+<section class="auth-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card card bg-dark shadow-lg">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <div class="auth-logo mb-3">
+                                <i class="fas fa-film fa-3x text-primary rotating-icon"></i>
+                            </div>
+                            <h2 class="auth-title mb-2">Welcome Back</h2>
+                            <p class="text-muted">Sign in to continue to CineMagic</p>
+                        </div>
+                        
+                        <form method="POST" class="auth-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-group mb-3">
+                                <label for="id_username">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    {{ form.username|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label for="id_password">Password</label>
+                                    <a href="{% url 'password_reset' %}" class="text-primary small">Forgot password?</a>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    {{ form.password|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+                            </div>
+                            
+                            &lt;!-- Demo account info -->
+                            <div class="demo-account mt-4 p-3 bg-secondary bg-opacity-25 rounded text-center">
+                                <p class="small mb-1">Demo Account:</p>
+                                <p class="small mb-1">Username: demo</p>
+                                <p class="small mb-0">Password: demo1234</p>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="card-footer text-center py-3 bg-secondary bg-opacity-10">
+                        <p class="mb-0">Don't have an account? <a href="{% url 'register' %}" class="text-primary">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

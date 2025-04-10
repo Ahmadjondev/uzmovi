@@ -1,0 +1,59 @@
+<div class="comment" id="comment-{{ comment.id }}">
+    <div class="comment-header">
+        <div class="comment-author">
+            <span class="author-name">{{ comment.user.username }}</span>
+            <span class="comment-date">{{ comment.created_at|date:"d/m/Y" }}</span>
+        </div>
+    </div>
+    <div class="comment-content">
+        {{ comment.content }}
+    </div>
+    <div class="comment-actions">
+        <button class="like-button {% if user.is_authenticated and user in comment.likes.all %}active{% endif %}" 
+                data-comment-id="{{ comment.id }}" data-username="{{ comment.user.username }}">
+            <i class="fas fa-thumbs-up"></i> <span class="likes-count">{{ comment.get_likes_count }}</span>
+        </button>
+        <button class="dislike-button {% if user.is_authenticated and user in comment.dislikes.all %}active{% endif %}" 
+                data-comment-id="{{ comment.id }}">
+            <i class="fas fa-thumbs-down"></i> <span class="dislikes-count">{{ comment.get_dislikes_count }}</span>
+        </button>
+        {% if user.is_authenticated %}
+        <button class="reply-button" data-comment-id="{{ comment.id }}" data-username="{{ comment.user.username }}">
+            Javob berish
+        </button>
+        {% endif %}
+    </div>
+    
+    {% if not comment.is_leaf_node %}
+        <div class="comment-replies">
+            {% for child in comment.get_children %}
+                <div class="comment reply" id="comment-{{ child.id }}">
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <span class="author-name">{{ child.user.username }}</span>
+                            <span class="comment-date">{{ child.created_at|date:"d/m/Y" }}</span>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        {{ child.content }}
+                    </div>
+                    <div class="comment-actions">
+                        <button class="like-button {% if user.is_authenticated and user in child.likes.all %}active{% endif %}" 
+                                data-comment-id="{{ child.id }}" data-username="{{ child.user.username }}">
+                            <i class="fas fa-thumbs-up"></i> <span class="likes-count">{{ child.get_likes_count }}</span>
+                        </button>
+                        <button class="dislike-button {% if user.is_authenticated and user in child.dislikes.all %}active{% endif %}" 
+                                data-comment-id="{{ child.id }}">
+                            <i class="fas fa-thumbs-down"></i> <span class="dislikes-count">{{ child.get_dislikes_count }}</span>
+                        </button>
+                        {% if user.is_authenticated %}
+                        <button class="reply-button" data-comment-id="{{ comment.id }}" data-username="{{ child.user.username }}">
+                            Javob berish
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

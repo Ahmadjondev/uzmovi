@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Account - CineMagic{% endblock %}
+
+{% block content %}
+<section class="auth-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="auth-card card bg-dark shadow-lg">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <div class="auth-logo mb-3">
+                                <i class="fas fa-film fa-3x text-primary rotating-icon"></i>
+                            </div>
+                            <h2 class="auth-title mb-2">Create an Account</h2>
+                            <p class="text-muted">Join CineMagic to start streaming</p>
+                        </div>
+                        
+                        <form method="POST" class="auth-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-group mb-3">
+                                <label for="id_username">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    {{ form.username|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="id_email">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    {{ form.email|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="id_password1">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    {{ form.password1|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label for="id_password2">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    {{ form.password2|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the <a href="#" class="text-primary">Terms of Service</a> and 
+                                    <a href="#" class="text-primary">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Create Account
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="card-footer text-center py-3 bg-secondary bg-opacity-10">
+                        <p class="mb-0">Already have an account? <a href="{% url 'login' %}" class="text-primary">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

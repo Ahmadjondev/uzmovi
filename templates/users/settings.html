@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Settings - CineMagic{% endblock %}
+
+{% block content %}
+<section class="settings-section py-5 mt-5">
+    <div class="container">
+        <h1 class="section-title mb-4">Settings</h1>
+        
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="list-group settings-nav">
+                    <a href="#preferences" class="list-group-item list-group-item-action active" data-bs-toggle="list">
+                        <i class="fas fa-sliders-h me-2"></i>Preferences
+                    </a>
+                    <a href="#account" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                        <i class="fas fa-user-circle me-2"></i>Account
+                    </a>
+                    <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                        <i class="fas fa-bell me-2"></i>Notifications
+                    </a>
+                    <a href="#security" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                        <i class="fas fa-shield-alt me-2"></i>Security
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="preferences">
+                        <div class="card bg-dark">
+                            <div class="card-header">
+                                <h4 class="mb-0">Preferences</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    
+                                    <div class="mb-4">
+                                        <div class="form-check form-switch">
+                                            {{ p_form.dark_mode }}
+                                            <label class="form-check-label" for="id_dark_mode">Dark Mode</label>
+                                        </div>
+                                        <small class="text-muted">Enable dark mode for a more comfortable viewing experience.</small>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label">Favorite Genres</label>
+                                        <div class="row">
+                                            {% for checkbox in p_form.favorite_genres %}
+                                                <div class="col-md-4 mb-2">
+                                                    {{ checkbox }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <small class="text-muted">Select your favorite genres to get personalized recommendations.</small>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Save Preferences
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="account">
+                        <div class="card bg-dark">
+                            <div class="card-header">
+                                <h4 class="mb-0">Account Settings</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Manage your account settings and profile information.</p>
+                                <a href="{% url 'profile' %}" class="btn btn-primary">
+                                    <i class="fas fa-user-edit me-2"></i>Edit Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="notifications">
+                        <div class="card bg-dark">
+                            <div class="card-header">
+                                <h4 class="mb-0">Notification Settings</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    
+                                    <div class="mb-4">
+                                        <div class="form-check form-switch">
+                                            {{ p_form.email_notifications }}
+                                            <label class="form-check-label" for="id_email_notifications">Email Notifications</label>
+                                        </div>
+                                        <small class="text-muted">Receive email notifications about new releases and recommendations.</small>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Save Notification Settings
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="security">
+                        <div class="card bg-dark">
+                            <div class="card-header">
+                                <h4 class="mb-0">Security Settings</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Manage your password and security settings.</p>
+                                <a href="{% url 'password_reset' %}" class="btn btn-primary">
+                                    <i class="fas fa-key me-2"></i>Change Password
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

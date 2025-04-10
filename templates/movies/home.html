@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Featured Videos Section -->
+    {% if featured_videos %}
+        <section class="section featured-section" data-aos="fade-up">
+            <div class="container">
+                <h2 class="section-title">Eng so'nggilari</h2>
+                <div class="video-slider">
+                    <div class="slider-arrow prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="video-grid">
+                        {% for video in featured_videos %}
+                            {% include 'movies/includes/video_card.html' with video=video %}
+                        {% endfor %}
+                    </div>
+                    <div class="slider-arrow next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    <!-- Movies Section -->
+    {% if latest_movies %}
+        <section class="section movies-section" data-aos="fade-up" data-aos-delay="100">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Kinolar</h2>
+                    <a href="{% url 'content_type_list' 'movie' %}" class="view-all">Barchasini ko'rish <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="video-slider">
+                    <div class="slider-arrow prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="video-grid">
+                        {% for video in latest_movies %}
+                            {% include 'movies/includes/video_card.html' with video=video %}
+                        {% endfor %}
+                    </div>
+                    <div class="slider-arrow next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    <!-- Series Section -->
+    {% if latest_series %}
+        <section class="section series-section" data-aos="fade-up" data-aos-delay="200">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Seriallar</h2>
+                    <a href="{% url 'content_type_list' 'series' %}" class="view-all">Barchasini ko'rish <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="video-slider">
+                    <div class="slider-arrow prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="video-grid">
+                        {% for video in latest_series %}
+                            {% include 'movies/includes/video_card.html' with video=video %}
+                        {% endfor %}
+                    </div>
+                    <div class="slider-arrow next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    <!-- Cartoons Section -->
+    {% if latest_cartoons %}
+        <section class="section cartoons-section" data-aos="fade-up" data-aos-delay="300">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Multfilmlar</h2>
+                    <a href="{% url 'content_type_list' 'cartoon' %}" class="view-all">Barchasini ko'rish <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="video-slider">
+                    <div class="slider-arrow prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="video-grid">
+                        {% for video in latest_cartoons %}
+                            {% include 'movies/includes/video_card.html' with video=video %}
+                        {% endfor %}
+                    </div>
+                    <div class="slider-arrow next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    <!-- Info Section -->
+    <section class="section info-section" data-aos="fade-up" data-aos-delay="400">
+        <div class="container">
+            <h2 class="section-title">HD filmlarni onlayn tomosha qiling!</h2>
+            <div class="info-content animate__animated animate__fadeIn">
+                <p>Ishingiz og'ir kundan keyin mijozlar bilan "kurash" kunidan so'ng hayot juda ham yomonmasdigan darajat hor bir kishi o'z
+                    sevimli filmlarini tomosha qilish yoqadi. Bu siz uchun ajoyib dam olish usuli bo'lishi mumkin. Filmlar bizning hayotimizda
+                    doimiy bo'lishga haqli. Buning barchasi bizning web-saytimizda yaratilgan. Bizga o'tib siz filmlarni tomosha qilishingiz joyida
+                    yaratilgan sifatli ajoyibdir. Kimdir filmlarni minnatdor bo'ladi, kimdir seriallar, kimdir multfilmlar. Bunda barchasi mavjud
+                    chunki bizda ajoyib rejissyorlar tomonidan yaratilgan ajoyib filmlar mavjud. Siz ularni tomosha qilishga bog'liq bo'lganingiz
+                    mumkin.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

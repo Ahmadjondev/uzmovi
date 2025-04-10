@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Mening ro'yxatim - UZMOVI.ASIA{% endblock %}
+
+{% block content %}
+<section class="watchlist-section">
+    <div class="container">
+        <h1 class="page-title">Mening ro'yxatim</h1>
+        
+        {% if watchlist_items %}
+            <div class="video-grid-container">
+                {% for item in watchlist_items %}
+                    {% include 'movies/includes/video_card.html' with video=item.video %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-watchlist">
+                <p>Sizning ro'yxatingiz bo'sh.</p>
+                <p>Sevimli filmlar va seriallarni qo'shish uchun ularning sahifasiga o'ting va "Ro'yxatga qo'shish" tugmasini bosing.</p>
+                <a href="{% url 'home' %}" class="btn btn-primary">Bosh sahifaga qaytish</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
