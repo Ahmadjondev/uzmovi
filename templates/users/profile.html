@@ -1,101 +1,99 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}My Profile - CineMagic{% endblock %}
+{% block title %}My Profile - UZMOVI.ASIA{% endblock %}
 
 {% block content %}
     <section class="profile-section py-5 mt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <div class="card bg-dark">
-                        <div class="card-body text-center">
-                            <div class="profile-avatar mb-4">
-                                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="rounded-circle img-fluid profile-img">
-                            </div>
-                            <h3 class="profile-name mb-2">{{ user.username }}</h3>
-                            <p class="text-muted mb-3">{{ user.email }}</p>
-
-                            <div class="profile-stats d-flex justify-content-around mb-3">
-                                <div class="stat-item">
-                                    <h5 class="mb-0">{{ user.watchlist.count }}</h5>
-                                    <small class="text-muted">Watchlist</small>
-                                </div>
-                                <div class="stat-item">
-                                    <h5 class="mb-0">{{ user.ratings.count }}</h5>
-                                    <small class="text-muted">Ratings</small>
-                                </div>
-                            </div>
-
-                            <div class="profile-bio mb-3">
-                                <p>{{ user.profile.bio|default:"No bio yet." }}</p>
-                            </div>
-
-                            <div class="profile-actions">
-                                <a href="{% url 'watchlist' %}" class="btn btn-outline-primary me-2">
-                                    <i class="fas fa-heart me-1"></i> My Watchlist
-                                </a>
-                                <a href="{% url 'user_settings' %}" class="btn btn-outline-light">
-                                    <i class="fas fa-cog me-1"></i> Settings
-                                </a>
-                            </div>
-                        </div>
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2 class="profile-title">Account Information</h2>
+                    <div class="profile-actions">
+                        <a href="{% url 'user_settings' %}" class="btn btn-outline-light">
+                            <i class="fas fa-cog me-1"></i> Settings
+                        </a>
                     </div>
                 </div>
 
-                <div class="col-lg-8">
-                    <div class="card bg-dark mb-4">
-                        <div class="card-header">
-                            <h4 class="mb-0">Edit Profile</h4>
+                <form method="POST" class="profile-form">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            {{ u_form.username|as_crispy_field }}
                         </div>
-                        <div class="card-body">
-                            <form method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        {{ u_form.username|as_crispy_field }}
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        {{ u_form.email|as_crispy_field }}
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        {{ u_form.first_name|as_crispy_field }}
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        {{ u_form.last_name|as_crispy_field }}
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    {{ form.avatar|as_crispy_field }}
-                                </div>
-
-                                <div class="mb-3">
-                                    {{ form.bio|as_crispy_field }}
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Favorite Genres</label>
-                                    <div class="row">
-                                        {% for checkbox in form.favorite_genres %}
-                                            <div class="col-md-4 mb-2">
-                                                {{ checkbox }}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save me-2"></i>Save Changes
-                                    </button>
-                                </div>
-                            </form>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            {{ u_form.email|as_crispy_field }}
                         </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            {{ u_form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            {{ u_form.last_name|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2 class="profile-title">Activity</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <h4 class="mb-3">Recent Watchlist</h4>
+                        {% if watchlist %}
+                            <div class="list-group">
+                                {% for item in watchlist %}
+                                    <a href="{% url 'video_detail' item.video.slug %}" class="list-group-item list-group-item-action bg-dark-lighter">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ item.video.title }}</h5>
+                                            <small>{{ item.added_at|date:"M d, Y" }}</small>
+                                        </div>
+                                        <small>{{ item.video.content_type|title }} • {{ item.video.release_year }}</small>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-3">
+                                <a href="{% url 'watchlist' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No items in your watchlist yet.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <h4 class="mb-3">Recent Ratings</h4>
+                        {% if ratings %}
+                            <div class="list-group">
+                                {% for rating in ratings %}
+                                    <a href="{% url 'video_detail' rating.video.slug %}" class="list-group-item list-group-item-action bg-dark-lighter">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ rating.video.title }}</h5>
+                                            <span class="badge bg-primary">{{ rating.value }}/10</span>
+                                        </div>
+                                        <small>{{ rating.video.content_type|title }} • {{ rating.video.release_year }}</small>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">You haven't rated any videos yet.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

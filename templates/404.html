@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}404 - Page Not Found{% endblock %}
+
+{% block content %}
+    <div class="error-page-container">
+        <div class="error-content animate__animated animate__fadeIn">
+            <div class="error-code">404</div>
+            <div class="error-film-strip">
+                <div class="film-strip-hole"></div>
+                <div class="film-strip-hole"></div>
+                <div class="film-strip-hole"></div>
+                <div class="film-strip-hole"></div>
+            </div>
+            <h1 class="error-title animate__animated animate__fadeInUp animate__delay-1s">Oops! Page Not Found</h1>
+            <p class="error-message animate__animated animate__fadeInUp animate__delay-1s">
+                The movie you're looking for doesn't exist in our database.
+            </p>
+            <div class="error-actions animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                    <i class="fas fa-home me-2"></i>Return to Home
+                </a>
+                <a href="javascript:history.back()" class="btn btn-outline-light ms-3">
+                    <i class="fas fa-arrow-left me-2"></i>Go Back
+                </a>
+            </div>
+        </div>
+
+        <div class="floating-elements">
+            <div class="floating-element popcorn animate__animated animate__fadeInDown animate__delay-1s">
+                <i class="fas fa-film fa-3x"></i>
+            </div>
+            <div class="floating-element camera animate__animated animate__fadeInDown animate__delay-1s">
+                <i class="fas fa-video fa-3x"></i>
+            </div>
+            <div class="floating-element ticket animate__animated animate__fadeInDown animate__delay-2s">
+                <i class="fas fa-ticket-alt fa-3x"></i>
+            </div>
+            <div class="floating-element clapperboard animate__animated animate__fadeInDown animate__delay-2s">
+                <i class="fas fa-photo-video fa-3x"></i>
+            </div>
+        </div>
+    </div>
+{% endblock %}

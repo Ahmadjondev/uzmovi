@@ -46,15 +46,15 @@ class VideoListView(ListView):
         if content_type:
             context['content_type'] = content_type
             if content_type == 'movie':
-                context['title'] = 'Movies'
+                context['title'] = 'Filmlar'
             elif content_type == 'series':
-                context['title'] = 'TV Series'
+                context['title'] = 'Seriallar'
             elif content_type == 'cartoon':
-                context['title'] = 'Cartoons'
+                context['title'] = 'Multfilmlar'
             elif content_type == 'clip':
-                context['title'] = 'Clips'
+                context['title'] = 'Kliplar'
         else:
-            context['title'] = 'All Videos'
+            context['title'] = 'Barcha videolar'
 
         return context
 
@@ -209,7 +209,7 @@ def add_comment(request, slug=None, series_slug=None, season=None, episode=None)
                 comment.parent_id = parent_id
 
             comment.save()
-            messages.success(request, 'Your comment has been added.')
+            messages.success(request, 'Izohingiz qo\'shildi.')
 
             return redirect(redirect_url)
 
@@ -268,10 +268,10 @@ def toggle_watchlist(request, video_id):
 
     if not created:
         watchlist_item.delete()
-        messages.success(request, f'"{video.title}" has been removed from your watchlist.')
+        messages.success(request, f'"{video.title}" sevimlilar ro\'yxatidan olib tashlandi.')
         in_watchlist = False
     else:
-        messages.success(request, f'"{video.title}" has been added to your watchlist.')
+        messages.success(request, f'"{video.title}" sevimlilar ro\'yxatiga qo\'shildi.')
         in_watchlist = True
 
     # If AJAX request, return JSON response
@@ -308,9 +308,9 @@ def rate_video(request, video_id):
             video.rating = avg_rating
             video.save(update_fields=['rating'])
 
-            messages.success(request, f'Your rating for "{video.title}" has been saved.')
+            messages.success(request, f'"{video.title}" uchun bahongiz saqlandi.')
         else:
-            messages.error(request, 'There was an error with your rating submission.')
+            messages.error(request, 'Bahongizni saqlashda xatolik yuz berdi.')
 
     return redirect('video_detail', slug=video.slug)
 

@@ -3,42 +3,42 @@
 {% block title %}{{ title }} - UZMOVI.ASIA{% endblock %}
 
 {% block content %}
-<section class="video-list-section">
-    <div class="container">
-        <h1 class="page-title">{{ title }}</h1>
-        
-        {% if videos %}
-            <div class="video-grid-container">
-                {% for video in videos %}
-                    {% include 'movies/includes/video_card.html' with video=video %}
-                {% endfor %}
-            </div>
-            
-            <!-- Pagination -->
-            {% if is_paginated %}
-            <div class="pagination">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1" class="page-link">1</a>
-                    {% if page_obj.previous_page_number != 1 %}
-                        <a href="?page={{ page_obj.previous_page_number }}" class="page-link">{{ page_obj.previous_page_number }}</a>
-                    {% endif %}
+    <section class="video-list-section">
+        <div class="container">
+            <h1 class="page-title">{{ title }}</h1>
+
+            {% if videos %}
+                <div class="video-grid-container">
+                    {% for video in videos %}
+                        {% include 'movies/includes/video_card.html' with video=video %}
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1" class="page-link">1</a>
+                            {% if page_obj.previous_page_number != 1 %}
+                                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">{{ page_obj.previous_page_number }}</a>
+                            {% endif %}
+                        {% endif %}
+
+                        <span class="current-page">{{ page_obj.number }}</span>
+
+                        {% if page_obj.has_next %}
+                            {% if page_obj.next_page_number != paginator.num_pages %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="page-link">{{ page_obj.next_page_number }}</a>
+                            {% endif %}
+                            <a href="?page={{ paginator.num_pages }}" class="page-link">{{ paginator.num_pages }}</a>
+                        {% endif %}
+                    </div>
                 {% endif %}
-                
-                <span class="current-page">{{ page_obj.number }}</span>
-                
-                {% if page_obj.has_next %}
-                    {% if page_obj.next_page_number != paginator.num_pages %}
-                        <a href="?page={{ page_obj.next_page_number }}" class="page-link">{{ page_obj.next_page_number }}</a>
-                    {% endif %}
-                    <a href="?page={{ paginator.num_pages }}" class="page-link">{{ paginator.num_pages }}</a>
-                {% endif %}
-            </div>
+            {% else %}
+                <div class="no-videos">
+                    <p>Hech qanday {{ title|lower }} topilmadi.</p>
+                </div>
             {% endif %}
-        {% else %}
-            <div class="no-videos">
-                <p>Hech qanday {{ title|lower }} topilmadi.</p>
-            </div>
-        {% endif %}
-    </div>
-</section>
+        </div>
+    </section>
 {% endblock %}
