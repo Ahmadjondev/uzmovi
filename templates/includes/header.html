@@ -22,7 +22,9 @@
                         <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="avatar-img">
                         <span class="username">{{ user.username }}</span>
                     </a>
-                    <a href="{% url 'account_logout' %}" class="btn btn-logout">Chiqish</a>
+                    <a href="{% url 'account_logout' %}" class="btn btn-logout">
+                        <i class="fas fa-sign-out-alt me-1"></i> Chiqish
+                    </a>
                 {% else %}
                     <a href="{% url 'account_signup' %}" class="btn btn-register">Ro'yhatdan o'tish</a>
                     <a href="{% url 'account_login' %}" class="btn btn-login">Kirish</a>

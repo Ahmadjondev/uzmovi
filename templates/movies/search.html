@@ -3,61 +3,82 @@
 {% block title %}Qidiruv: {{ query }} - UZMOVI.ASIA{% endblock %}
 
 {% block content %}
-<section class="search-results-section">
-    <div class="container">
-        <h1 class="page-title">Qidiruv: "{{ query }}"</h1>
-        
-        <div class="search-filters">
-            <form action="{% url 'search' %}" method="GET" class="filter-form">
-                <input type="hidden" name="q" value="{{ query }}">
-                
-                <div class="filter-group">
-                    <label class="filter-label">Turi:</label>
-                    <select name="content_type" class="filter-select">
-                        <option value="">Barchasi</option>
-                        <option value="movie" {% if content_type == 'movie' %}selected{% endif %}>Kinolar</option>
-                        <option value="series" {% if content_type == 'series' %}selected{% endif %}>Seriallar</option>
-                        <option value="cartoon" {% if content_type == 'cartoon' %}selected{% endif %}>Multfilmlar</option>
-                        <option value="clip" {% if content_type == 'clip' %}selected{% endif %}>Kliplar</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label class="filter-label">Janr:</label>
-                    <div class="genre-checkboxes">
-                        {% for genre in genres %}
-                            <label class="genre-checkbox">
-                                <input type="checkbox" name="genre" value="{{ genre.name }}" 
-                                       {% if genre.name in selected_genres %}checked{% endif %}>
-                                {{ genre.name }}
-                            </label>
-                        {% endfor %}
+    <section class="search-results-section">
+        <div class="container">
+            <h1 class="page-title">Qidiruv: "{{ query }}"</h1>
+
+            <div class="search-filters">
+                <form action="{% url 'search' %}" method="GET" class="filter-form">
+                    <input type="hidden" name="q" value="{{ query }}">
+
+                    <div class="filter-group">
+                        <label class="filter-label">Turi:</label>
+                        <select name="content_type" class="filter-select">
+                            <option value="">Barchasi</option>
+                            <option value="movie" {% if content_type == 'movie' %}selected{% endif %}>Kinolar</option>
+                            <option value="series" {% if content_type == 'series' %}selected{% endif %}>Seriallar</option>
+                            <option value="cartoon" {% if content_type == 'cartoon' %}selected{% endif %}>Multfilmlar</option>
+                            <option value="clip" {% if content_type == 'clip' %}selected{% endif %}>Kliplar</option>
+                        </select>
                     </div>
-                </div>
-                
-                <div class="filter-actions">
-                    <button type="submit" class="filter-button">Qo'llash</button>
-                    <a href="{% url 'search' %}?q={{ query }}" class="reset-button">Tozalash</a>
-                </div>
-            </form>
-        </div>
-        
-        {% if videos %}
-            <div class="search-results">
+
+                    <div class="filter-group">
+                        <label class="filter-label">Janr:</label>
+                        <div class="genre-checkboxes">
+                            {% for genre in genres %}
+                                <label class="genre-checkbox">
+                                    <input type="checkbox" name="genre" value="{{ genre.name }}"
+                                           {% if genre.name in selected_genres %}checked{% endif %}>
+                                    {{ genre.name }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="submit" class="filter-button">
+                            <i class="fas fa-filter me-2"></i>Qo'llash
+                        </button>
+                        <a href="{% url 'search' %}?q={{ query }}" class="reset-button">
+                            <i class="fas fa-times me-2"></i>Tozalash
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            {% if videos %}
                 <p class="results-count">{{ videos|length }} natija topildi</p>
-                
                 <div class="video-grid-container">
                     {% for video in videos %}
-                        {% include 'movies/includes/video_card.html' with video=video %}
+                        <div class="video-card animate__animated animate__fadeIn">
+                            <a href="{% url 'video_detail' video.slug %}" class="video-card-link">
+                                <div class="video-poster">
+                                    <img src="{{ video.get_poster_url }}" alt="{{ video.title }}" class="poster-img">
+                                    <div class="video-overlay">
+                                        <div class="video-info">
+                                            <h3 class="video-title">{{ video.title }}</h3>
+                                            <div class="video-meta">
+                                                <span class="video-year">{{ video.release_year }}</span>
+                                                {% if video.rating > 0 %}
+                                                    <span class="video-rating"><i class="fas fa-star"></i> {{ video.rating }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     {% endfor %}
                 </div>
-            </div>
-        {% else %}
-            <div class="no-results">
-                <p>Sizning so'rovingiz bo'yicha hech narsa topilmadi.</p>
-                <p>Qidiruv so'zlarini o'zgartirib ko'ring yoki filtrlarni tozalang.</p>
-            </div>
-        {% endif %}
-    </div>
-</section>
+            {% else %}
+                <div class="no-results">
+                    <p>Sizning so'rovingiz bo'yicha hech narsa topilmadi.</p>
+                    <p>Qidiruv so'zlarini o'zgartirib ko'ring yoki filtrlarni tozalang.</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary mt-3">
+                        <i class="fas fa-home me-2"></i>Bosh sahifaga qaytish
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 {% endblock %}

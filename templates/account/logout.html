@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Chiqish - UZMOVI.ASIA{% endblock %}
+
+{% block content %}
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1 class="auth-title">Chiqish</h1>
+            <p class="auth-subtitle">Haqiqatan ham saytdan chiqmoqchimisiz?</p>
+
+            <form class="auth-form" method="POST" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+
+                <div class="logout-actions">
+                    <button type="submit" class="auth-button">
+                        <i class="fas fa-sign-out-alt me-2"></i>Ha, chiqish
+                    </button>
+
+                    <a href="{% url 'home' %}" class="btn btn-outline-light mt-3 w-100">
+                        <i class="fas fa-times me-2"></i>Yo'q, ortga qaytish
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

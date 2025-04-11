@@ -343,6 +343,7 @@ def search(request):
         'content_type': content_type,
     }
 
+    print(context)
     return render(request, 'movies/search.html', context)
 
 def ajax_search(request):
