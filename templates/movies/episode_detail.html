@@ -7,12 +7,12 @@
         <div class="container">
             <h1 class="video-title">{{ episode.series.title }} - {{ episode.title }}</h1>
 
-            <!-- Qism tanlash -->
+            <!-- Episode Selector -->
             <div class="episode-selector">
                 <select class="episode-dropdown" id="episodeSelector">
                     <option value="{{ episode.get_absolute_url }}" selected>{{ episode.season_number }}-MAVSUM {{ episode.episode_number }}-QISM</option>
                     {% for season_num, episodes in seasons.items %}
-                        <optgroup label="{{ season_num }}-Mavsum">
+                        <optgroup label="Season {{ season_num }}">
                             {% for ep in episodes %}
                                 {% if ep.id != episode.id %}
                                     <option value="{{ ep.get_absolute_url }}">
@@ -25,12 +25,12 @@
                 </select>
             </div>
 
-            <!-- Video pleyer -->
+            <!-- Video Player -->
             <div class="video-player-container animate__animated animate__fadeIn">
                 {% if episode.video_file %}
                     <video id="videoPlayer" controls class="video-player">
                         <source src="{{ episode.video_file.url }}" type="video/mp4">
-                        Brauzeringiz video tegini qo'llab-quvvatlamaydi.
+                        Your browser does not support the video tag.
                     </video>
                 {% elif episode.get_embed_url %}
                     <iframe src="{{ episode.get_embed_url }}" frameborder="0" allowfullscreen class="video-player"></iframe>
@@ -38,7 +38,7 @@
                     <div class="video-placeholder">
                         <img src="{{ series.get_backdrop_url }}" alt="{{ episode.title }}" class="backdrop-img">
                         <div class="placeholder-overlay">
-                            <p>Video mavjud emas</p>
+                            <p>Video not available</p>
                         </div>
                     </div>
                 {% endif %}
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- Qism navigatsiyasi -->
+            <!-- Episode Navigation -->
             <div class="episode-navigation">
                 {% if prev_episode %}
                     <a href="{{ prev_episode.get_absolute_url }}" class="prev-episode">
@@ -72,19 +72,17 @@
                 {% endif %}
             </div>
 
-            <!-- Qism ma'lumotlari -->
+            <!-- Episode Info -->
             <div class="video-info-container">
                 <div class="video-description">
                     <p>{{ episode.description|default:series.description }}</p>
                     <div class="video-meta">
-                        <span class="meta-item"><i class="fas fa-calendar"></i> {{ episode.release_date }}</span>
-                        <span class="meta-item"><i class="fas fa-clock"></i> {{ episode.duration }}</span>
                         <span class="meta-item"><i class="fas fa-eye"></i> {{ episode.views_count }} ko'rilgan</span>
                     </div>
                 </div>
             </div>
 
-            <!-- O'xshash seriallar -->
+            <!-- Similar Series -->
             <div class="similar-videos">
                 <div class="section-header">
                     <h2 class="section-title">Seriallar</h2>
@@ -98,9 +96,15 @@
                         {% for similar in similar_videos|default:'' %}
                             {% include 'movies/includes/video_card.html' with video=similar %}
                         {% empty %}
-                            <div class="no-similar-videos">
-                                <p>Boshqa seriallar mavjud emas.</p>
-                            </div>
+                            {% for i in '123456'|make_list %}
+                                {% with series.id|add:i as random_id %}
+                                    {% with 'series'|random_video:random_id as random_video %}
+                                        {% if random_video %}
+                                            {% include 'movies/includes/video_card.html' with video=random_video %}
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endfor %}
                         {% endfor %}
                     </div>
                     <div class="slider-arrow next-arrow">
@@ -109,11 +113,11 @@
                 </div>
             </div>
 
-            <!-- Izohlar bo'limi -->
+            <!-- Comments Section -->
             <div class="comments-section">
                 <h3 class="comments-title">Izohlar</h3>
 
-                <!-- Izoh formasi -->
+                <!-- Comment Form -->
                 {% if user.is_authenticated %}
                     <div class="comment-form-container">
                         <form method="post" action="{% url 'add_comment_episode' series.slug episode.season_number episode.episode_number %}" class="comment-form">
@@ -143,7 +147,7 @@
                     </div>
                 {% endif %}
 
-                <!-- Izohlar ro'yxati -->
+                <!-- Comments List -->
                 <div class="comments-list">
                     {% if comments %}
                         {% for comment in comments %}
@@ -162,7 +166,7 @@
 
 {% block extra_js %}
     <script>
-        // Qism tanlash funksiyasi
+        // Episode selector functionality
         document.addEventListener('DOMContentLoaded', function() {
             const episodeSelector = document.getElementById('episodeSelector');
             if (episodeSelector) {
@@ -173,7 +177,7 @@
                 });
             }
 
-            // Izohga javob berish funksiyasi
+            // Comment reply functionality
             const replyButtons = document.querySelectorAll('.reply-button');
             const parentIdInput = document.getElementById('parentId');
             const commentForm = document.querySelector('.comment-form');
@@ -213,7 +217,7 @@
                 });
             });
 
-            // Yoqdi/Yoqmadi funksiyasi
+            // Like/Dislike functionality
             const likeButtons = document.querySelectorAll('.like-button');
             const dislikeButtons = document.querySelectorAll('.dislike-button');
 
@@ -285,7 +289,7 @@
                 });
             });
 
-            // CSRF tokenni olish uchun yordamchi funksiya
+            // Helper function to get CSRF token
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {

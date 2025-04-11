@@ -37,17 +37,11 @@ class Video(models.Model):
     description = models.TextField()
     poster = models.ImageField(upload_to='posters/', blank=True, null=True)
     poster_url = models.URLField(blank=True, null=True, help_text="URL to poster image if not uploading")
-    backdrop = models.ImageField(upload_to='backdrops/', blank=True, null=True)
-    backdrop_url = models.URLField(blank=True, null=True, help_text="URL to backdrop image if not uploading")
     video_file = models.FileField(upload_to='videos/', blank=True, null=True)
     video_url = models.URLField(blank=True, null=True, help_text="URL to video (YouTube, Vimeo, etc.)")
-    release_year = models.PositiveIntegerField()
-    duration = models.CharField(max_length=20)
-    rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
     content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES)
     categories = models.ManyToManyField(Category, related_name='videos')
     genres = models.ManyToManyField(Genre, related_name='videos')
-    director = models.CharField(max_length=255, blank=True, null=True)
     cast = models.TextField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)
     is_new_release = models.BooleanField(default=False)
@@ -84,10 +78,6 @@ class Video(models.Model):
         return '/static/img/placeholder-poster.jpg'
 
     def get_backdrop_url(self):
-        if self.backdrop and hasattr(self.backdrop, 'url'):
-            return self.backdrop.url
-        elif self.backdrop_url:
-            return self.backdrop_url
         return '/static/img/placeholder-backdrop.jpg'
 
     def get_embed_url(self):
@@ -129,8 +119,6 @@ class Episode(models.Model):
     video_file = models.FileField(upload_to='episodes/', blank=True, null=True)
     video_url = models.URLField(blank=True, null=True, help_text="URL to video (YouTube, Vimeo, etc.)")
     poster_url = models.URLField(blank=True, null=True, help_text="URL to episode poster image")
-    duration = models.CharField(max_length=20)
-    release_date = models.DateField()
     views_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

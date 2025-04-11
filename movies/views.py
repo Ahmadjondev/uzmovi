@@ -46,15 +46,15 @@ class VideoListView(ListView):
         if content_type:
             context['content_type'] = content_type
             if content_type == 'movie':
-                context['title'] = 'Filmlar'
+                context['title'] = 'Movies'
             elif content_type == 'series':
-                context['title'] = 'Seriallar'
+                context['title'] = 'TV Series'
             elif content_type == 'cartoon':
-                context['title'] = 'Multfilmlar'
+                context['title'] = 'Cartoons'
             elif content_type == 'clip':
-                context['title'] = 'Kliplar'
+                context['title'] = 'Clips'
         else:
-            context['title'] = 'Barcha videolar'
+            context['title'] = 'All Videos'
 
         return context
 
@@ -76,7 +76,7 @@ class VideoDetailView(DetailView):
             genres__id__in=video_genres_ids
         ).exclude(
             id=video.id
-        ).distinct().order_by('-rating')[:6]
+        ).distinct().order_by('-views_count')[:6]  # Changed from '-rating' to '-views_count'
 
         # Check if video is in user's watchlist - optimize with a single query
         in_watchlist = False
@@ -209,7 +209,7 @@ def add_comment(request, slug=None, series_slug=None, season=None, episode=None)
                 comment.parent_id = parent_id
 
             comment.save()
-            messages.success(request, 'Izohingiz qo\'shildi.')
+            messages.success(request, 'Your comment has been added.')
 
             return redirect(redirect_url)
 
@@ -268,10 +268,10 @@ def toggle_watchlist(request, video_id):
 
     if not created:
         watchlist_item.delete()
-        messages.success(request, f'"{video.title}" sevimlilar ro\'yxatidan olib tashlandi.')
+        messages.success(request, f'"{video.title}" has been removed from your watchlist.')
         in_watchlist = False
     else:
-        messages.success(request, f'"{video.title}" sevimlilar ro\'yxatiga qo\'shildi.')
+        messages.success(request, f'"{video.title}" has been added to your watchlist.')
         in_watchlist = True
 
     # If AJAX request, return JSON response
@@ -303,14 +303,9 @@ def rate_video(request, video_id):
             rating.video = video
             rating.save()
 
-            # Update video rating (average of all ratings)
-            avg_rating = Rating.objects.filter(video=video).aggregate(Avg('value'))['value__avg']
-            video.rating = avg_rating
-            video.save(update_fields=['rating'])
-
-            messages.success(request, f'"{video.title}" uchun bahongiz saqlandi.')
+            messages.success(request, f'Your rating for "{video.title}" has been saved.')
         else:
-            messages.error(request, 'Bahongizni saqlashda xatolik yuz berdi.')
+            messages.error(request, 'There was an error with your rating submission.')
 
     return redirect('video_detail', slug=video.slug)
 
@@ -326,7 +321,6 @@ def search(request):
         videos = videos.filter(
             Q(title__icontains=query) |
             Q(description__icontains=query) |
-            Q(director__icontains=query) |
             Q(cast__icontains=query)
         )
 
@@ -358,7 +352,7 @@ def ajax_search(request):
 
     videos = Video.objects.filter(
         Q(title__icontains=query) |
-        Q(director__icontains=query)
+        Q(cast__icontains=query)
     )[:5]
 
     results = []
@@ -368,7 +362,6 @@ def ajax_search(request):
             'title': video.title,
             'poster': video.get_poster_url(),
             'content_type': video.content_type,
-            'year': video.release_year,
             'url': video.get_absolute_url(),
         })
 

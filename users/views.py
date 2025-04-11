@@ -33,20 +33,3 @@ def profile(request):
         'comments': comments
     }
     return render(request, 'users/profile.html', context)
-
-@login_required
-def user_settings(request):
-    if request.method == 'POST':
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-
-        if p_form.is_valid():
-            p_form.save()
-            messages.success(request, 'Your settings have been updated!')
-            return redirect('user_settings')
-    else:
-        p_form = ProfileUpdateForm(instance=request.user.profile)
-
-    context = {
-        'form': p_form
-    }
-    return render(request, 'users/settings.html', context)

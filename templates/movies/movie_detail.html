@@ -3,195 +3,180 @@
 {% block title %}{{ movie.title }} - CineMagic{% endblock %}
 
 {% block content %}
-&lt;!-- Movie Hero Section -->
-<section class="movie-detail-hero">
-    <div class="movie-backdrop" style="background-image: url('{{ movie.backdrop.url }}')"></div>
-    <div class="movie-overlay"></div>
-    
-    <div class="container">
-        <div class="row py-5">
-            <div class="col-md-3 mb-4 mb-md-0">
-                <div class="movie-poster-container">
-                    {% if movie.poster %}
-                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="img-fluid rounded shadow-lg">
-                    {% else %}
-                        <img src="/static/img/placeholder.jpg" alt="{{ movie.title }}" class="img-fluid rounded shadow-lg">
-                    {% endif %}
+    &lt;!-- Movie Hero Section -->
+    <section class="movie-detail-hero">
+
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="movie-poster-container">
+                        {% if movie.poster %}
+                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="img-fluid rounded shadow-lg">
+                        {% else %}
+                            <img src="/static/img/placeholder.jpg" alt="{{ movie.title }}" class="img-fluid rounded shadow-lg">
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-            
-            <div class="col-md-9">
-                <div class="movie-detail-content">
-                    <h1 class="movie-title display-4 mb-3">{{ movie.title }}</h1>
-                    
-                    <div class="movie-meta mb-4">
-                        <span class="movie-meta-item">
-                            <i class="fas fa-star text-warning"></i> {{ movie.rating }}
-                        </span>
-                        <span class="movie-meta-item">
-                            <i class="fas fa-clock"></i> {{ movie.duration }}
-                        </span>
-                        <span class="movie-meta-item">
-                            <i class="fas fa-calendar"></i> {{ movie.year }}
-                        </span>
+
+                <div class="col-md-9">
+                    <div class="movie-detail-content">
+                        <h1 class="movie-title display-4 mb-3">{{ movie.title }}</h1>
+
+                        <div class="movie-meta mb-4">
                         <span class="movie-meta-item">
                             {{ movie.get_genres_display }}
                         </span>
-                    </div>
-                    
-                    <p class="movie-description lead mb-4">{{ movie.description }}</p>
-                    
-                    <div class="movie-details mb-4">
-                        {% if movie.director %}
-                            <p class="mb-1"><strong>Director:</strong> {{ movie.director }}</p>
-                        {% endif %}
-                        
-                        {% if movie.cast %}
-                            <p class="mb-1"><strong>Cast:</strong> {{ movie.cast }}</p>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="movie-actions">
-                        {% if movie.trailer_url %}
-                            <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#trailerModal">
-                                <i class="fas fa-play me-2"></i>Watch Trailer
+                        </div>
+
+                        <p class="movie-description lead mb-4">{{ movie.description }}</p>
+
+                        <div class="movie-details mb-4">
+                            {% if movie.cast %}
+                                <p class="mb-1"><strong>Cast:</strong> {{ movie.cast }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="movie-actions">
+                            {% if movie.trailer_url %}
+                                <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                                    <i class="fas fa-play me-2"></i>Watch Trailer
+                                </button>
+                            {% endif %}
+
+                            <button class="btn btn-outline-light btn-lg me-3">
+                                <i class="fas fa-film me-2"></i>Watch Movie
                             </button>
-                        {% endif %}
-                        
-                        <button class="btn btn-outline-light btn-lg me-3">
-                            <i class="fas fa-film me-2"></i>Watch Movie
-                        </button>
-                        
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'toggle_watchlist' movie.id %}" class="btn {% if in_watchlist %}btn-secondary{% else %}btn-outline-light{% endif %} btn-lg toggle-watchlist"
-                               data-movie-id="{{ movie.id }}">
-                                {% if in_watchlist %}
-                                    <i class="fas fa-check me-2"></i>In Watchlist
-                                {% else %}
-                                    <i class="fas fa-plus me-2"></i>Add to List
-                                {% endif %}
-                            </a>
-                        {% endif %}
+
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'toggle_watchlist' movie.id %}" class="btn {% if in_watchlist %}btn-secondary{% else %}btn-outline-light{% endif %} btn-lg toggle-watchlist"
+                                   data-movie-id="{{ movie.id }}">
+                                    {% if in_watchlist %}
+                                        <i class="fas fa-check me-2"></i>In Watchlist
+                                    {% else %}
+                                        <i class="fas fa-plus me-2"></i>Add to List
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-&lt;!-- User Rating Section -->
-{% if user.is_authenticated %}
-<section class="rating-section py-4">
-    <div class="container">
-        <div class="card bg-dark">
-            <div class="card-body">
-                <h4 class="card-title mb-3">Rate This Movie</h4>
-                
-                <form action="{% url 'rate_movie' movie.id %}" method="post" class="rating-form">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group mb-3">
-                                <label for="id_value">Your Rating</label>
-                                {{ rating_form.value }}
+    &lt;!-- User Rating Section -->
+    {% if user.is_authenticated %}
+        <section class="rating-section py-4">
+            <div class="container">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">Rate This Movie</h4>
+
+                        <form action="{% url 'rate_movie' movie.id %}" method="post" class="rating-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group mb-3">
+                                        <label for="id_value">Your Rating</label>
+                                        {{ rating_form.value }}
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-3">
+                                        <label for="id_comment">Your Review (Optional)</label>
+                                        {{ rating_form.comment }}
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="form-group mb-3">
-                                <label for="id_comment">Your Review (Optional)</label>
-                                {{ rating_form.comment }}
-                            </div>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">Submit</button>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    &lt;!-- Similar Movies Section -->
+    <section class="movie-section py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">You May Also Like</h2>
+                <a href="#" class="text-primary view-all">View All</a>
+            </div>
+
+            <div class="movie-slider">
+                <div class="row movie-row">
+                    {% for similar_movie in similar_movies %}
+                        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                            {% include 'movies/includes/movie_card.html' with movie=similar_movie %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button class="slider-arrow slider-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-arrow slider-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
-    </div>
-</section>
-{% endif %}
+    </section>
 
-&lt;!-- Similar Movies Section -->
-<section class="movie-section py-5">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="section-title">You May Also Like</h2>
-            <a href="#" class="text-primary view-all">View All</a>
-        </div>
-        
-        <div class="movie-slider">
-            <div class="row movie-row">
-                {% for similar_movie in similar_movies %}
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                        {% include 'movies/includes/movie_card.html' with movie=similar_movie %}
+    &lt;!-- Trailer Modal -->
+    {% if movie.trailer_url %}
+        <div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body p-0 position-relative">
+                        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        <div class="ratio ratio-16x9">
+                            <iframe src="/placeholder.svg" id="trailerIframe" allowfullscreen></iframe>
+                        </div>
                     </div>
-                {% endfor %}
-            </div>
-            
-            <button class="slider-arrow slider-prev">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="slider-arrow slider-next">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-</section>
-
-&lt;!-- Trailer Modal -->
-{% if movie.trailer_url %}
-<div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content bg-dark">
-            <div class="modal-body p-0 position-relative">
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" 
-                        data-bs-dismiss="modal" aria-label="Close"></button>
-                
-                <div class="ratio ratio-16x9">
-                    <iframe src="/placeholder.svg" id="trailerIframe" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    // Handle trailer modal
-    document.addEventListener('DOMContentLoaded', function() {
-        {% if movie.trailer_url %}
-            var trailerModal = document.getElementById('trailerModal');
-            var trailerIframe = document.getElementById('trailerIframe');
-            var trailerUrl = '{{ movie.trailer_url }}';
-            
-            // Convert YouTube URL to embed format
-            if (trailerUrl.includes('youtube.com/watch')) {
-                trailerUrl = trailerUrl.replace('watch?v=', 'embed/');
-            } else if (trailerUrl.includes('youtu.be/')) {
-                trailerUrl = trailerUrl.replace('youtu.be/', 'youtube.com/embed/');
-            }
-            
-            // Add autoplay parameter
-            trailerUrl += '?autoplay=1';
-            
-            trailerModal.addEventListener('show.bs.modal', function () {
-                trailerIframe.setAttribute('src', trailerUrl);
-            });
-            
-            trailerModal.addEventListener('hide.bs.modal', function () {
-                trailerIframe.setAttribute('src', '');
-            });
-            
-            // Auto-play trailer if requested in URL
-            if (window.location.search.includes('play=trailer')) {
-                var modal = new bootstrap.Modal(trailerModal);
-                modal.show();
-            }
-        {% endif %}
-    });
-</script>
+    <script>
+        // Handle trailer modal
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if movie.trailer_url %}
+                var trailerModal = document.getElementById('trailerModal');
+                var trailerIframe = document.getElementById('trailerIframe');
+                var trailerUrl = '{{ movie.trailer_url }}';
+
+                // Convert YouTube URL to embed format
+                if (trailerUrl.includes('youtube.com/watch')) {
+                    trailerUrl = trailerUrl.replace('watch?v=', 'embed/');
+                } else if (trailerUrl.includes('youtu.be/')) {
+                    trailerUrl = trailerUrl.replace('youtu.be/', 'youtube.com/embed/');
+                }
+
+                // Add autoplay parameter
+                trailerUrl += '?autoplay=1';
+
+                trailerModal.addEventListener('show.bs.modal', function () {
+                    trailerIframe.setAttribute('src', trailerUrl);
+                });
+
+                trailerModal.addEventListener('hide.bs.modal', function () {
+                    trailerIframe.setAttribute('src', '');
+                });
+
+                // Auto-play trailer if requested in URL
+                if (window.location.search.includes('play=trailer')) {
+                    var modal = new bootstrap.Modal(trailerModal);
+                    modal.show();
+                }
+            {% endif %}
+        });
+    </script>
 {% endblock %}

@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <form method="POST" class="profile-form">
+                <form method="POST" class="profile-form" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <div class="form-row">
@@ -41,12 +41,63 @@
                         </div>
                     </div>
 
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Avatar</label>
+                            {{ form.avatar|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bio</label>
+                            {{ form.bio|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Preferences</label>
+                            <div class="card bg-dark p-3 mb-3">
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.dark_mode }}
+                                    <label class="form-check-label ms-2" for="id_dark_mode">Dark Mode</label>
+                                </div>
+
+                                <div class="form-check form-switch">
+                                    {{ form.email_notifications }}
+                                    <label class="form-check-label ms-2" for="id_email_notifications">Email Notifications</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Favorite Genres</label>
+                            <div class="card bg-dark p-3">
+                                <div class="row">
+                                    {% for checkbox in form.favorite_genres %}
+                                        <div class="col-md-4 col-6 mb-2">
+                                            {{ checkbox }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-submit">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save me-2"></i>Save Changes
                         </button>
                     </div>
                 </form>
+
+                <!-- Password Reset Section -->
+                <div class="password-reset-section">
+                    <h3 class="password-reset-title">Change Password</h3>
+                    <p class="mb-4">If you want to change your password, click the button below</p>
+                    <div class="password-reset-actions">
+                        <a href="{% url 'password_reset' %}" class="btn btn-primary">
+                            <i class="fas fa-key me-2"></i>Change Password
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <div class="profile-card">

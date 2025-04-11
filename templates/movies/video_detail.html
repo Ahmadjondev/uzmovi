@@ -59,16 +59,16 @@
             <div class="video-info-container">
                 <div class="video-description">
                     <p>{{ video.description }}</p>
-                    <div class="video-meta">
-                        <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span>
-                        <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span>
-                        {% if video.rating > 0 %}
-                            <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span>
-                        {% endif %}
-                        {% if video.director %}
-                            <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span>
-                        {% endif %}
-                    </div>
+{#                    <div class="video-meta">#}
+{#                        <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span>#}
+{#                        <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span>#}
+{#                        {% if video.rating > 0 %}#}
+{#                            <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span>#}
+{#                        {% endif %}#}
+{#                        {% if video.director %}#}
+{#                            <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span>#}
+{#                        {% endif %}#}
+{#                    </div>#}
                     {% if video.genres.all %}
                         <div class="video-genres">
                             {% for genre in video.genres.all %}

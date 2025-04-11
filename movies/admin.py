@@ -17,13 +17,13 @@ class GenreAdmin(admin.ModelAdmin):
 class EpisodeInline(admin.TabularInline):
     model = Episode
     extra = 1
-    fields = ('title', 'season_number', 'episode_number', 'video_url', 'duration', 'release_date')
+    fields = ('title', 'season_number', 'episode_number', 'video_url')
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'content_type', 'release_year', 'rating', 'views_count', 'is_featured', 'is_new_release')
+    list_display = ('title', 'content_type', 'views_count', 'is_featured', 'is_new_release')
     list_filter = ('content_type', 'is_featured', 'is_new_release', 'is_popular', 'categories', 'genres')
-    search_fields = ('title', 'description', 'director', 'cast')
+    search_fields = ('title', 'description', 'cast')
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('categories', 'genres')
     list_per_page = 25  # Limit items per page for better performance
@@ -33,13 +33,13 @@ class VideoAdmin(admin.ModelAdmin):
     inlines = [EpisodeInline]
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'description', 'poster', 'poster_url', 'backdrop', 'backdrop_url')
+            'fields': ('title', 'slug', 'description', 'poster', 'poster_url')
         }),
         ('Video Source', {
             'fields': ('video_file', 'video_url')
         }),
         ('Details', {
-            'fields': ('content_type', 'release_year', 'duration', 'rating', 'director', 'cast')
+            'fields': ('content_type', 'cast')
         }),
         ('Categories & Genres', {
             'fields': ('categories', 'genres', 'tags')
@@ -51,7 +51,7 @@ class VideoAdmin(admin.ModelAdmin):
 
 @admin.register(Episode)
 class EpisodeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'series', 'season_number', 'episode_number', 'duration', 'views_count')
+    list_display = ('title', 'series', 'season_number', 'episode_number', 'views_count')
     list_filter = ('series', 'season_number')
     search_fields = ('title', 'description', 'series__title')
     prepopulated_fields = {'slug': ('title',)}
@@ -60,7 +60,7 @@ class EpisodeAdmin(admin.ModelAdmin):
             'fields': ('series', 'title', 'slug', 'description')
         }),
         ('Episode Info', {
-            'fields': ('season_number', 'episode_number', 'duration', 'release_date')
+            'fields': ('season_number', 'episode_number')
         }),
         ('Video Source', {
             'fields': ('video_file', 'video_url')
