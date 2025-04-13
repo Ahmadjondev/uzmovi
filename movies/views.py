@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
-from django.db.models import Q, Avg, Count
+from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from django.contrib import messages
 from django.urls import reverse
-from .models import Category, Genre, Video, Episode, Comment, Watchlist, Rating
-from .forms import CommentForm, RatingForm
+from .models import Category, Genre, Video, Episode, Comment
+from .forms import CommentForm
+from django.core.paginator import Paginator
 
 def home(request):
     featured_videos = Video.objects.filter(is_featured=True)[:6]
@@ -76,25 +77,7 @@ class VideoDetailView(DetailView):
             genres__id__in=video_genres_ids
         ).exclude(
             id=video.id
-        ).distinct().order_by('-views_count')[:6]  # Changed from '-rating' to '-views_count'
-
-        # Check if video is in user's watchlist - optimize with a single query
-        in_watchlist = False
-        user_rating = None
-
-        if self.request.user.is_authenticated:
-            in_watchlist = Watchlist.objects.filter(
-                user=self.request.user,
-                video=video
-            ).exists()
-
-            try:
-                user_rating = Rating.objects.get(
-                    user=self.request.user,
-                    video=video
-                )
-            except Rating.DoesNotExist:
-                pass
+        ).distinct().order_by('-views_count')[:6]
 
         # Get comments with prefetch for optimization
         comments = video.comments.filter(
@@ -103,9 +86,6 @@ class VideoDetailView(DetailView):
 
         context.update({
             'similar_videos': similar_videos,
-            'in_watchlist': in_watchlist,
-            'user_rating': user_rating,
-            'rating_form': RatingForm(instance=user_rating),
             'comments': comments,
             'comment_form': CommentForm(),
         })
@@ -261,53 +241,16 @@ def dislike_comment(request, comment_id):
         'dislikes_count': comment.get_dislikes_count()
     })
 
-@login_required
-def toggle_watchlist(request, video_id):
-    video = get_object_or_404(Video, id=video_id)
-    watchlist_item, created = Watchlist.objects.get_or_create(user=request.user, video=video)
+def category_detail(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    videos = Video.objects.filter(categories=category)
 
-    if not created:
-        watchlist_item.delete()
-        messages.success(request, f'"{video.title}" has been removed from your watchlist.')
-        in_watchlist = False
-    else:
-        messages.success(request, f'"{video.title}" has been added to your watchlist.')
-        in_watchlist = True
+    context = {
+        'category': category,
+        'videos': videos,
+    }
 
-    # If AJAX request, return JSON response
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'in_watchlist': in_watchlist})
-
-    # Otherwise redirect back to the video detail page
-    return redirect('video_detail', slug=video.slug)
-
-@login_required
-def watchlist_view(request):
-    watchlist_items = Watchlist.objects.filter(user=request.user).order_by('-added_at')
-    return render(request, 'movies/watchlist.html', {'watchlist_items': watchlist_items})
-
-@login_required
-def rate_video(request, video_id):
-    video = get_object_or_404(Video, id=video_id)
-
-    if request.method == 'POST':
-        try:
-            rating = Rating.objects.get(user=request.user, video=video)
-            form = RatingForm(request.POST, instance=rating)
-        except Rating.DoesNotExist:
-            form = RatingForm(request.POST)
-
-        if form.is_valid():
-            rating = form.save(commit=False)
-            rating.user = request.user
-            rating.video = video
-            rating.save()
-
-            messages.success(request, f'Your rating for "{video.title}" has been saved.')
-        else:
-            messages.error(request, 'There was an error with your rating submission.')
-
-    return redirect('video_detail', slug=video.slug)
+    return render(request, 'movies/category_detail.html', context)
 
 def search(request):
     query = request.GET.get('q', '')
@@ -335,15 +278,22 @@ def search(request):
     # Get all genres for the filter sidebar
     genres = Genre.objects.all()
 
+    # Pagination
+    paginator = Paginator(videos, 18)  # Show 18 videos per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'videos': videos,
+        'videos': page_obj,
         'query': query,
         'genres': genres,
         'selected_genres': genre_filter,
         'content_type': content_type,
+        'is_paginated': paginator.num_pages > 1,
+        'page_obj': page_obj,
+        'paginator': paginator,
     }
 
-    print(context)
     return render(request, 'movies/search.html', context)
 
 def ajax_search(request):
@@ -367,14 +317,3 @@ def ajax_search(request):
         })
 
     return JsonResponse({'results': results})
-
-def category_detail(request, slug):
-    category = get_object_or_404(Category, slug=slug)
-    videos = Video.objects.filter(categories=category)
-
-    context = {
-        'category': category,
-        'videos': videos,
-    }
-
-    return render(request, 'movies/category_detail.html', context)

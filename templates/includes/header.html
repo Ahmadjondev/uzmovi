@@ -49,11 +49,6 @@
                 <li class="nav-item {% if '/videos/clip/' in request.path %}active{% endif %}">
                     <a href="{% url 'content_type_list' 'clip' %}" class="nav-link">Kliplar</a>
                 </li>
-{#                {% if user.is_authenticated %}#}
-{#                    <li class="nav-item {% if '/my-list/' in request.path %}active{% endif %}">#}
-{#                        <a href="{% url 'watchlist' %}" class="nav-link">Mening ro'yxatim</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
             </ul>
         </nav>
     </div>

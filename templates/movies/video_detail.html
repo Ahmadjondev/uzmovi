@@ -27,13 +27,10 @@
 
             <!-- Video Player -->
             <div class="video-player-container animate__animated animate__fadeIn">
-                {% if video.video_file %}
-                    <video id="videoPlayer" controls class="video-player">
-                        <source src="{{ video.video_file.url }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                {% elif video.get_embed_url %}
-                    <iframe src="{{ video.get_embed_url }}" frameborder="0" allowfullscreen class="video-player"></iframe>
+
+                {% if video.get_embed_url %}
+                    <iframe src="{{ video.get_embed_url }}" frameborder="0" allowfullscreen
+                            class="video-player"></iframe>
                 {% else %}
                     <div class="video-placeholder">
                         <img src="{{ video.get_backdrop_url }}" alt="{{ video.title }}" class="backdrop-img">
@@ -59,16 +56,16 @@
             <div class="video-info-container">
                 <div class="video-description">
                     <p>{{ video.description }}</p>
-{#                    <div class="video-meta">#}
-{#                        <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span>#}
-{#                        <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span>#}
-{#                        {% if video.rating > 0 %}#}
-{#                            <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span>#}
-{#                        {% endif %}#}
-{#                        {% if video.director %}#}
-{#                            <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span>#}
-{#                        {% endif %}#}
-{#                    </div>#}
+                    {#                    <div class="video-meta">#}
+                    {#                        <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span>#}
+                    {#                        <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span>#}
+                    {#                        {% if video.rating > 0 %}#}
+                    {#                            <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span>#}
+                    {#                        {% endif %}#}
+                    {#                        {% if video.director %}#}
+                    {#                            <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span>#}
+                    {#                        {% endif %}#}
+                    {#                    </div>#}
                     {% if video.genres.all %}
                         <div class="video-genres">
                             {% for genre in video.genres.all %}
@@ -84,7 +81,8 @@
                 <div class="similar-videos">
                     <div class="section-header">
                         <h2 class="section-title">{{ video.content_type|title }}lar</h2>
-                        <a href="{% url 'content_type_list' video.content_type %}" class="view-all">Barchasini ko'rish <i class="fas fa-arrow-right"></i></a>
+                        <a href="{% url 'content_type_list' video.content_type %}" class="view-all">Barchasini ko'rish
+                            <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="video-slider">
                         <div class="slider-arrow prev-arrow">
@@ -112,10 +110,12 @@
                         <form method="post" action="{% url 'add_comment_video' video.slug %}" class="comment-form">
                             {% csrf_token %}
                             <div class="form-group">
-                                <input type="text" name="name" placeholder="Ismingiz" class="form-control" value="{{ user.username }}" readonly>
+                                <input type="text" name="name" placeholder="Ismingiz" class="form-control"
+                                       value="{{ user.username }}" readonly>
                             </div>
                             <div class="form-group">
-                                <input type="email" name="email" placeholder="E-mail" class="form-control" value="{{ user.email }}" readonly>
+                                <input type="email" name="email" placeholder="E-mail" class="form-control"
+                                       value="{{ user.email }}" readonly>
                             </div>
                             <div class="form-group">
                                 {{ comment_form.content }}
@@ -125,14 +125,16 @@
                                 <div class="captcha">
                                     <img src="/static/img/captcha.png" alt="Captcha" class="captcha-img">
                                 </div>
-                                <input type="text" name="captcha" placeholder="Rasmdagi kodni yozing" class="captcha-input">
+                                <input type="text" name="captcha" placeholder="Rasmdagi kodni yozing"
+                                       class="captcha-input">
                                 <button type="submit" class="submit-button">Yuborish</button>
                             </div>
                         </form>
                     </div>
                 {% else %}
                     <div class="login-to-comment">
-                        <p>Izoh qoldirish uchun <a href="{% url 'account_login' %}">tizimga kiring</a> yoki <a href="{% url 'account_signup' %}">ro'yxatdan o'ting</a>.</p>
+                        <p>Izoh qoldirish uchun <a href="{% url 'account_login' %}">tizimga kiring</a> yoki <a
+                                href="{% url 'account_signup' %}">ro'yxatdan o'ting</a>.</p>
                     </div>
                 {% endif %}
 
@@ -156,10 +158,10 @@
 {% block extra_js %}
     <script>
         // Episode selector functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const episodeSelector = document.getElementById('episodeSelector');
             if (episodeSelector) {
-                episodeSelector.addEventListener('change', function() {
+                episodeSelector.addEventListener('change', function () {
                     if (this.value) {
                         window.location.href = this.value;
                     }
@@ -172,12 +174,12 @@
             const commentForm = document.querySelector('.comment-form');
 
             replyButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const commentId = this.getAttribute('data-comment-id');
                     parentIdInput.value = commentId;
 
                     // Scroll to comment form
-                    commentForm.scrollIntoView({ behavior: 'smooth' });
+                    commentForm.scrollIntoView({behavior: 'smooth'});
 
                     // Focus on comment textarea
                     const textarea = commentForm.querySelector('textarea');
@@ -199,7 +201,7 @@
 
                     // Add cancel reply functionality
                     const cancelButton = replyingTo.querySelector('.cancel-reply');
-                    cancelButton.addEventListener('click', function() {
+                    cancelButton.addEventListener('click', function () {
                         parentIdInput.value = '';
                         replyingTo.remove();
                     });
@@ -211,7 +213,7 @@
             const dislikeButtons = document.querySelectorAll('.dislike-button');
 
             likeButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const commentId = this.getAttribute('data-comment-id');
                     const url = `/comment/like/${commentId}/`;
@@ -245,7 +247,7 @@
             });
 
             dislikeButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const commentId = this.getAttribute('data-comment-id');
                     const url = `/comment/dislike/${commentId}/`;

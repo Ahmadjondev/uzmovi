@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
@@ -17,12 +18,14 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
 
+
 class Genre(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
+
 
 class Video(models.Model):
     CONTENT_TYPE_CHOICES = (
@@ -84,7 +87,8 @@ class Video(models.Model):
         """Convert YouTube, Vimeo, etc. URLs to embed URLs"""
         if not self.video_url:
             return None
-
+        print(self.video_url)
+        import re
         # YouTube
         if 'youtube.com/watch' in self.video_url or 'youtu.be/' in self.video_url:
             video_id = None
@@ -100,6 +104,12 @@ class Video(models.Model):
 
             if video_id:
                 return f'https://www.youtube.com/embed/{video_id}'
+        # OK.ru
+        if 'ok.ru/video/' in self.video_url:
+            match = re.search(r'ok\.ru/video/(\d+)', self.video_url)
+            if match:
+                video_id = match.group(1)
+                return f'https://ok.ru/videoembed/{video_id}'
 
         # Vimeo
         if 'vimeo.com/' in self.video_url:
@@ -108,6 +118,7 @@ class Video(models.Model):
 
         # For other services or direct video URLs, return as is
         return self.video_url
+
 
 class Episode(models.Model):
     series = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='episodes')
@@ -166,6 +177,12 @@ class Episode(models.Model):
 
             if video_id:
                 return f'https://www.youtube.com/embed/{video_id}'
+        # OK.ru
+        if 'ok.ru/video/' in self.video_url:
+            match = re.search(r'ok\.ru/video/(\d+)', self.video_url)
+            if match:
+                video_id = match.group(1)
+                return f'https://ok.ru/videoembed/{video_id}'
 
         # Vimeo
         if 'vimeo.com/' in self.video_url:
@@ -174,6 +191,7 @@ class Episode(models.Model):
 
         # For other services or direct video URLs, return as is
         return self.video_url
+
 
 class Comment(MPTTModel):
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='comments', null=True, blank=True)
@@ -198,6 +216,7 @@ class Comment(MPTTModel):
     def get_dislikes_count(self):
         return self.dislikes.count()
 
+
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watchlist')
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='in_watchlists')
@@ -208,6 +227,7 @@ class Watchlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s watchlist - {self.video.title}"
+
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')

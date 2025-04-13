@@ -16,11 +16,27 @@
                     <div class="auth-errors">
                         {% for field in form %}
                             {% for error in field.errors %}
-                                <p class="error-message">{{ error }}</p>
+                                <p class="error-message">
+                                    {% if field.name == 'login' and error == 'The e-mail address and/or password you specified are not correct.' %}
+                                        Email yoki parol noto'g'ri.
+                                    {% elif field.name == 'login' and error == 'The username and/or password you specified are not correct.' %}
+                                        Foydalanuvchi nomi yoki parol noto'g'ri.
+                                    {% else %}
+                                        {{ error }}
+                                    {% endif %}
+                                </p>
                             {% endfor %}
                         {% endfor %}
                         {% for error in form.non_field_errors %}
-                            <p class="error-message">{{ error }}</p>
+                            <p class="error-message">
+                                {% if error == 'The e-mail address and/or password you specified are not correct.' %}
+                                    Email yoki parol noto'g'ri.
+                                {% elif error == 'The username and/or password you specified are not correct.' %}
+                                    Foydalanuvchi nomi yoki parol noto'g'ri.
+                                {% else %}
+                                    {{ error }}
+                                {% endif %}
+                            </p>
                         {% endfor %}
                     </div>
                 {% endif %}

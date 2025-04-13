@@ -6,9 +6,38 @@
 {% block content %}
     <section class="profile-section py-5 mt-5">
         <div class="container">
+            {% if messages %}
+                <div class="messages mb-4">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <div class="profile-card">
                 <div class="profile-header">
                     <h2 class="profile-title">Account Information</h2>
+                </div>
+
+                <!-- Email Verification Status -->
+                <div class="email-verification-status mb-4">
+                    <div class="d-flex align-items-center justify-content-between p-3 {% if user.profile.email_verified %}bg-success bg-opacity-10{% else %}bg-warning bg-opacity-10{% endif %} rounded">
+                        <div>
+                            <h5 class="mb-1">Email Status</h5>
+                            <p class="mb-0">{{ user.email }}</p>
+                        </div>
+                        {% if user.profile.email_verified %}
+                            <span class="badge bg-success">Tasdiqlangan</span>
+                        {% else %}
+                            <div>
+                                <span class="badge bg-warning text-dark mb-2">Tasdiqlanmagan</span>
+                                <a href="{% url 'verify_email' %}" class="btn btn-sm btn-primary d-block">Emailni tasdiqlash</a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <form method="POST" class="profile-form" enctype="multipart/form-data">
@@ -20,8 +49,8 @@
                             {{ u_form.username|as_crispy_field }}
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Email</label>
-                            {{ u_form.email|as_crispy_field }}
+                            <label class="form-label">Email (o'zgartirib bo'lmaydi)</label>
+                            <input type="email" value="{{ user.email }}" class="form-control" readonly>
                         </div>
                     </div>
 
@@ -38,7 +67,7 @@
 
                     <div class="form-submit">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Save Changes
+                            <i class="fas fa-save me-2"></i>O'zgarishlarni saqlash
                         </button>
                     </div>
                 </form>

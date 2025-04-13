@@ -93,16 +93,16 @@ class CommentAdmin(MPTTModelAdmin):
         return obj.get_dislikes_count()
     get_dislikes_count.short_description = 'Dislikes'
 
-@admin.register(Watchlist)
-class WatchlistAdmin(admin.ModelAdmin):
-    list_display = ('user', 'video', 'added_at')
-    list_filter = ('user', 'added_at')
-    search_fields = ('user__username', 'video__title')
-    date_hierarchy = 'added_at'
-
-@admin.register(Rating)
-class RatingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'video', 'value', 'created_at')
-    list_filter = ('value', 'created_at')
-    search_fields = ('user__username', 'video__title')
-    date_hierarchy = 'created_at'
+# @admin.register(Watchlist)
+# class WatchlistAdmin(admin.ModelAdmin):
+#     list_display = ('user', 'video', 'added_at')
+#     list_filter = ('user', 'added_at')
+#     search_fields = ('user__username', 'video__title')
+#     date_hierarchy = 'added_at'
+#
+# @admin.register(Rating)
+# class RatingAdmin(admin.ModelAdmin):
+#     list_display = ('user', 'video', 'value', 'created_at')
+#     list_filter = ('value', 'created_at')
+#     search_fields = ('user__username', 'video__title')
+#     date_hierarchy = 'created_at'

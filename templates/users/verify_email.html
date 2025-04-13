@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Email Tasdiqlash - UZMOVI.ASIA{% endblock %}
+
+{% block content %}
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1 class="auth-title">Email Tasdiqlash</h1>
+            <p class="auth-subtitle">Emailingizga yuborilgan 6 raqamli kodni kiriting</p>
+
+            {% if messages %}
+                <div class="auth-messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form class="auth-form" method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    {{ form.code|as_crispy_field }}
+                </div>
+
+                <button type="submit" class="auth-button">
+                    <i class="fas fa-check-circle"></i>
+                    Tasdiqlash
+                </button>
+
+                <div class="auth-links mt-4 text-center">
+                    <a href="{% url 'send_verification_email' %}" class="resend-link">
+                        <i class="fas fa-paper-plane me-1"></i> Kodni qayta yuborish
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
