@@ -78,7 +78,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['avatar', 'dark_mode', 'email_notifications']
+        fields = ['dark_mode', 'email_notifications']
 
 class EmailVerificationForm(forms.Form):
     code = forms.CharField(

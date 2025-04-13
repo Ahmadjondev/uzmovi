@@ -7,7 +7,6 @@ import string
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='avatars/', default='avatars/default.png')
     dark_mode = models.BooleanField(default=True)
     email_notifications = models.BooleanField(default=True)
     email_verified = models.BooleanField(default=False)
