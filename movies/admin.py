@@ -1,6 +1,6 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
-from .models import Category, Genre, Video, Episode, Comment, Watchlist, Rating
+from .models import Category, Genre, Video, Episode, Comment
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

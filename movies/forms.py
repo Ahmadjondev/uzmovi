@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Rating
+from .models import Comment
 
 class CommentForm(forms.ModelForm):
     parent_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
@@ -11,10 +11,10 @@ class CommentForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Write your comment...'}),
         }
 
-class RatingForm(forms.ModelForm):
-    class Meta:
-        model = Rating
-        fields = ['value']
-        widgets = {
-            'value': forms.Select(attrs={'class': 'form-select'}),
-        }
+# class RatingForm(forms.ModelForm):
+#     class Meta:
+#         model = Rating
+#         fields = ['value']
+#         widgets = {
+#             'value': forms.Select(attrs={'class': 'form-select'}),
+#         }

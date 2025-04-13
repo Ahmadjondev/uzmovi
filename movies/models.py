@@ -215,28 +215,3 @@ class Comment(MPTTModel):
 
     def get_dislikes_count(self):
         return self.dislikes.count()
-
-
-class Watchlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watchlist')
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='in_watchlists')
-    added_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('user', 'video')
-
-    def __str__(self):
-        return f"{self.user.username}'s watchlist - {self.video.title}"
-
-
-class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='ratings')
-    value = models.IntegerField(choices=[(i, i) for i in range(1, 11)])
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('user', 'video')
-
-    def __str__(self):
-        return f"{self.user.username} rated {self.video.title}: {self.value}"
