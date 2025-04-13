@@ -2,7 +2,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-from movies.models import Category, Genre, Video, Episode, Comment, Watchlist, Rating
+from movies.models import Category, Genre, Video, Episode, Comment
 
 class Command(BaseCommand):
     help = 'Seeds the database with initial data'
@@ -20,7 +20,7 @@ class Command(BaseCommand):
         self.create_videos()
 
         # Create demo user
-        self.create_demo_user()
+        # self.create_demo_user()
 
         self.stdout.write(self.style.SUCCESS('Data seeding completed successfully!'))
 

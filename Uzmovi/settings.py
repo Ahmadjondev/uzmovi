@@ -67,7 +67,11 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'movies.context_processors.categories',
             ],
+            'libraries': {
+                'custom_tags': 'movies.templatetags.custom_tags',
+            },
         },
+
     },
 ]
 
@@ -151,3 +155,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_PASSWORD_MIN_LENGTH = 8
+# Remove complexity requirements
+ACCOUNT_PASSWORD_COMPLEXITY_VALIDATION = None
+# Add this to your settings.py to make username not unique
+AUTH_USER_MODEL = 'auth.User'

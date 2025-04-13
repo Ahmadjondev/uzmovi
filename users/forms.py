@@ -3,9 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
+
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    username = forms.CharField(required=False)
+    username = forms.CharField(
+        required=True,  # Make username required but not unique
+        help_text="Enter your name (this doesn't need to be unique)"
+    )
 
     class Meta:
         model = User
@@ -14,15 +18,12 @@ class UserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Remove help text
-        for field in ['username', 'password1', 'password2']:
+        for field in ['password1', 'password2']:
             self.fields[field].help_text = None
-
-        # Make username not required
-        self.fields['username'].required = False
 
         # Custom error messages in Uzbek
         self.fields['username'].error_messages = {
-            'unique': 'Bu foydalanuvchi nomi allaqachon mavjud.',
+            'required': 'Ismingizni kiriting.',
         }
 
         self.fields['password1'].error_messages = {
@@ -37,28 +38,19 @@ class UserRegisterForm(UserCreationForm):
         }
 
         # Custom labels
+        self.fields['username'].label = 'Ismingiz'
         self.fields['password1'].label = 'Parol'
         self.fields['password2'].label = 'Parolni tasdiqlang'
 
-    def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get('username')
-        email = cleaned_data.get('email')
+    def clean_username(self):
+        """
+        Override the unique username validation.
+        We'll still validate other aspects of the username.
+        """
+        username = self.cleaned_data.get('username')
+        # We're not checking for uniqueness here
+        return username
 
-        # If username is not provided, generate one from email
-        if not username and email:
-            base_username = email.split('@')[0]
-            username = base_username
-            # Check if username exists and append numbers if needed
-            suffix = 1
-            while User.objects.filter(username=username).exists():
-                username = f"{base_username}{suffix}"
-                suffix += 1
-
-            cleaned_data['username'] = username
-            self.instance.username = username
-
-        return cleaned_data
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField(disabled=True, required=False)  # Make email read-only
@@ -71,14 +63,18 @@ class UserUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Custom error messages in Uzbek
         self.fields['username'].error_messages = {
-            'unique': 'Bu foydalanuvchi nomi allaqachon mavjud.',
-            'required': 'Foydalanuvchi nomini kiriting.',
+            'required': 'Ismingizni kiriting.',
         }
+
+        # Custom labels
+        self.fields['username'].label = 'Ismingiz'
+
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['dark_mode', 'email_notifications']
+
 
 class EmailVerificationForm(forms.Form):
     code = forms.CharField(

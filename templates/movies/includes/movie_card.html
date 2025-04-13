@@ -24,16 +24,16 @@
             <i class="fas fa-info-circle me-1"></i> Details
         </a>
 
-        {% if user.is_authenticated %}
-            <a href="{% url 'toggle_watchlist' movie.id %}" class="btn btn-sm {% if movie.id in user_watchlist %}btn-secondary{% else %}btn-outline-light{% endif %} w-100 toggle-watchlist"
-               data-movie-id="{{ movie.id }}">
-                {% if movie.id in user_watchlist %}
-                    <i class="fas fa-check me-1"></i> In Watchlist
-                {% else %}
-                    <i class="fas fa-plus me-1"></i> Add to List
-                {% endif %}
-            </a>
-        {% endif %}
+{#        {% if user.is_authenticated %}#}
+{#            <a href="{% url 'toggle_watchlist' movie.id %}" class="btn btn-sm {% if movie.id in user_watchlist %}btn-secondary{% else %}btn-outline-light{% endif %} w-100 toggle-watchlist"#}
+{#               data-movie-id="{{ movie.id }}">#}
+{#                {% if movie.id in user_watchlist %}#}
+{#                    <i class="fas fa-check me-1"></i> In Watchlist#}
+{#                {% else %}#}
+{#                    <i class="fas fa-plus me-1"></i> Add to List#}
+{#                {% endif %}#}
+{#            </a>#}
+{#        {% endif %}#}
     </div>
 
     {% if user.is_authenticated %}
