@@ -9,6 +9,7 @@ from .models import Category, Genre, Video, Episode, Comment
 from .forms import CommentForm
 from django.core.paginator import Paginator
 
+
 def home(request):
     featured_videos = Video.objects.filter(is_featured=True)[:6]
     latest_movies = Video.objects.filter(content_type='movie').order_by('-created_at')[:6]
@@ -24,6 +25,7 @@ def home(request):
         'popular_videos': popular_videos,
     }
     return render(request, 'movies/home.html', context)
+
 
 class VideoListView(ListView):
     model = Video
@@ -59,6 +61,7 @@ class VideoListView(ListView):
 
         return context
 
+
 class VideoDetailView(DetailView):
     model = Video
     template_name = 'movies/video_detail.html'
@@ -70,7 +73,6 @@ class VideoDetailView(DetailView):
 
         # Increment view count
         video.increment_views()
-
         # Get similar videos based on genres - optimize the query
         video_genres_ids = video.genres.values_list('id', flat=True)
         similar_videos = Video.objects.filter(
@@ -100,8 +102,8 @@ class VideoDetailView(DetailView):
                 seasons[episode.season_number].append(episode)
 
             context['seasons'] = seasons
-
         return context
+
 
 class EpisodeDetailView(DetailView):
     model = Episode
@@ -159,6 +161,7 @@ class EpisodeDetailView(DetailView):
 
         return context
 
+
 @login_required
 def add_comment(request, slug=None, series_slug=None, season=None, episode=None):
     if request.method == 'POST':
@@ -195,6 +198,7 @@ def add_comment(request, slug=None, series_slug=None, season=None, episode=None)
 
     return redirect('home')
 
+
 @login_required
 def like_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
@@ -217,6 +221,7 @@ def like_comment(request, comment_id):
         'likes_count': comment.get_likes_count(),
         'dislikes_count': comment.get_dislikes_count()
     })
+
 
 @login_required
 def dislike_comment(request, comment_id):
@@ -241,6 +246,7 @@ def dislike_comment(request, comment_id):
         'dislikes_count': comment.get_dislikes_count()
     })
 
+
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
     videos = Video.objects.filter(categories=category)
@@ -251,6 +257,7 @@ def category_detail(request, slug):
     }
 
     return render(request, 'movies/category_detail.html', context)
+
 
 def search(request):
     query = request.GET.get('q', '')
@@ -295,6 +302,7 @@ def search(request):
     }
 
     return render(request, 'movies/search.html', context)
+
 
 def ajax_search(request):
     query = request.GET.get('q', '')

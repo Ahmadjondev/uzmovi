@@ -20,7 +20,8 @@
                         {% if page_obj.has_previous %}
                             <a href="?page=1" class="page-link">1</a>
                             {% if page_obj.previous_page_number != 1 %}
-                                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">{{ page_obj.previous_page_number }}</a>
+                                <a href="?page={{ page_obj.previous_page_number }}"
+                                   class="page-link">{{ page_obj.previous_page_number }}</a>
                             {% endif %}
                         {% endif %}
 
@@ -28,7 +29,8 @@
 
                         {% if page_obj.has_next %}
                             {% if page_obj.next_page_number != paginator.num_pages %}
-                                <a href="?page={{ page_obj.next_page_number }}" class="page-link">{{ page_obj.next_page_number }}</a>
+                                <a href="?page={{ page_obj.next_page_number }}"
+                                   class="page-link">{{ page_obj.next_page_number }}</a>
                             {% endif %}
                             <a href="?page={{ paginator.num_pages }}" class="page-link">{{ paginator.num_pages }}</a>
                         {% endif %}

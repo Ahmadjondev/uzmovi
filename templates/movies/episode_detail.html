@@ -200,13 +200,11 @@
                     const replyingTo = document.createElement('div');
                     replyingTo.className = 'replying-to';
                     replyingTo.innerHTML = `<p>Javob berish: <span>${this.getAttribute('data-username')}</span> <button type="button" class="cancel-reply">Bekor qilish</button></p>`;
-
                     // Remove existing reply indicator if any
                     const existingIndicator = commentForm.querySelector('.replying-to');
                     if (existingIndicator) {
                         existingIndicator.remove();
                     }
-
                     // Add new indicator
                     commentForm.insertBefore(replyingTo, commentForm.firstChild);
 

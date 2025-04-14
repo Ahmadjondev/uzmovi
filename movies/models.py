@@ -84,7 +84,6 @@ class Video(models.Model):
         return '/static/img/placeholder-backdrop.jpg'
 
     def get_embed_url(self):
-        """Convert YouTube, Vimeo, etc. URLs to embed URLs"""
         if not self.video_url:
             return None
         print(self.video_url)
@@ -178,6 +177,7 @@ class Episode(models.Model):
             if video_id:
                 return f'https://www.youtube.com/embed/{video_id}'
         # OK.ru
+        import re
         if 'ok.ru/video/' in self.video_url:
             match = re.search(r'ok\.ru/video/(\d+)', self.video_url)
             if match:
