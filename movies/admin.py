@@ -42,7 +42,7 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('content_type', 'cast')
         }),
         ('Categories & Genres', {
-            'fields': ('categories', 'genres', 'tags')
+            'fields': ('categories', 'genres',)
         }),
         ('Flags', {
             'fields': ('is_featured', 'is_new_release', 'is_popular', 'views_count')
