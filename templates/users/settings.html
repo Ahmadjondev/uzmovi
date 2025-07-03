@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Settings - UZMOVI.ASIA{% endblock %}
+{% block title %}Sozlamalar - UZMOVI.ASIA{% endblock %}
 
 {% block content %}
     <section class="profile-section py-5 mt-5">
         <div class="container">
             <div class="profile-card">
                 <div class="profile-header">
-                    <h2 class="profile-title">Account Settings</h2>
+                    <h2 class="profile-title">Hisob sozlamalari</h2>
                     <div class="profile-actions">
                         <a href="{% url 'profile' %}" class="btn btn-outline-light">
-                            <i class="fas fa-user me-1"></i> Profile
+                            <i class="fas fa-user me-1"></i> Profil
                         </a>
                     </div>
                 </div>
@@ -20,22 +20,22 @@
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label class="form-label">Preferences</label>
+                        <label class="form-label">Afzalliklar</label>
                         <div class="card bg-dark p-3 mb-3">
                             <div class="form-check form-switch mb-3">
                                 {{ form.dark_mode }}
-                                <label class="form-check-label ms-2" for="id_dark_mode">Dark Mode</label>
+                                <label class="form-check-label ms-2" for="id_dark_mode">Tungi rejim</label>
                             </div>
 
                             <div class="form-check form-switch">
                                 {{ form.email_notifications }}
-                                <label class="form-check-label ms-2" for="id_email_notifications">Email Notifications</label>
+                                <label class="form-check-label ms-2" for="id_email_notifications">Email xabarnomalari</label>
                             </div>
                         </div>
                     </div>
 
 {#                    <div class="form-group">#}
-{#                        <label class="form-label">Favorite Genres</label>#}
+{#                        <label class="form-label">Sevimlili janrlar</label>#}
 {#                        <div class="card bg-dark p-3">#}
 {#                            <div class="row">#}
 {#                                {% for checkbox in form.favorite_genres %}#}
@@ -49,7 +49,7 @@
 
                     <div class="form-submit">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Save Settings
+                            <i class="fas fa-save me-2"></i>Sozlamalarni saqlash
                         </button>
                     </div>
                 </form>
@@ -57,13 +57,13 @@
 
             <div class="profile-card">
                 <div class="profile-header">
-                    <h2 class="profile-title">Security</h2>
+                    <h2 class="profile-title">Xavfsizlik</h2>
                 </div>
 
                 <div class="text-center py-3">
-                    <p class="mb-4">Change your password or update security settings</p>
+                    <p class="mb-4">Parolingizni o'zgartiring yoki xavfsizlik sozlamalarini yangilang</p>
                     <a href="{% url 'password_reset' %}" class="btn btn-primary">
-                        <i class="fas fa-key me-2"></i>Change Password
+                        <i class="fas fa-key me-2"></i>Parolni o'zgartirish
                     </a>
                 </div>
             </div>

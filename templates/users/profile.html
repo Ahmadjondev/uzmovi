@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}My Profile - UZMOVI.ASIA{% endblock %}
+{% block title %}Mening Profilim - UZMOVI.ASIA{% endblock %}
 
 {% block content %}
     <section class="profile-section py-5 mt-5">
@@ -11,7 +11,7 @@
                     {% for message in messages %}
                         <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show">
                             {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Yopish"></button>
                         </div>
                     {% endfor %}
                 </div>
@@ -19,14 +19,13 @@
 
             <div class="profile-card">
                 <div class="profile-header">
-                    <h2 class="profile-title">Account Information</h2>
+                    <h2 class="profile-title">Hisob ma'lumotlari</h2>
                 </div>
 
-                <!-- Email Verification Status -->
                 <div class="email-verification-status mb-4">
                     <div class="d-flex align-items-center justify-content-between p-3 {% if user.profile.email_verified %}bg-success bg-opacity-10{% else %}bg-warning bg-opacity-10{% endif %} rounded">
                         <div>
-                            <h5 class="mb-1">Email Status</h5>
+                            <h5 class="mb-1">Email holati</h5>
                             <p class="mb-0">{{ user.email }}</p>
                         </div>
                         {% if user.profile.email_verified %}
@@ -45,7 +44,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Username</label>
+                            {% comment %} <label class="form-label">Foydalanuvchi nomi</label> {% endcomment %}
                             {{ u_form.username|as_crispy_field }}
                         </div>
                         <div class="form-group">
@@ -56,11 +55,11 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">First Name</label>
+                            {% comment %} <label class="form-label">Ism</label> {% endcomment %}
                             {{ u_form.first_name|as_crispy_field }}
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Last Name</label>
+                            {% comment %} <label class="form-label">Familiya</label> {% endcomment %}
                             {{ u_form.last_name|as_crispy_field }}
                         </div>
                     </div>
@@ -72,13 +71,12 @@
                     </div>
                 </form>
 
-                <!-- Password Reset Section -->
                 <div class="password-reset-section mt-5 pt-4 border-top">
-                    <h3 class="password-reset-title">Change Password</h3>
-                    <p class="mb-4">If you want to change your password, click the button below</p>
+                    <h3 class="password-reset-title">Parolni o'zgartirish</h3>
+                    <p class="mb-4">Parolingizni o'zgartirmoqchi bo'lsangiz, quyidagi tugmani bosing</p>
                     <div class="password-reset-actions">
                         <a href="{% url 'password_reset' %}" class="btn btn-primary">
-                            <i class="fas fa-key me-2"></i>Change Password
+                            <i class="fas fa-key me-2"></i>Parolni o'zgartirish
                         </a>
                     </div>
                 </div>

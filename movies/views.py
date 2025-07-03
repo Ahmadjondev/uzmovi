@@ -170,7 +170,6 @@ def add_comment(request, slug=None, series_slug=None, season=None, episode=None)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.user = request.user
-
             # Determine if comment is for video or episode
             if slug:
                 video = get_object_or_404(Video, slug=slug)

@@ -38,7 +38,7 @@ class UserRegisterForm(UserCreationForm):
         }
 
         # Custom labels
-        self.fields['username'].label = 'Ismingiz'
+        self.fields['username'].label = 'Foydalanuvchi nomi'
         self.fields['password1'].label = 'Parol'
         self.fields['password2'].label = 'Parolni tasdiqlang'
 
@@ -68,6 +68,8 @@ class UserUpdateForm(forms.ModelForm):
 
         # Custom labels
         self.fields['username'].label = 'Ismingiz'
+        self.fields['first_name'].label = 'Ismingiz'
+        self.fields['last_name'].label = 'Familiyangiz'
 
 
 class ProfileUpdateForm(forms.ModelForm):

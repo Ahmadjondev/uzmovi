@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from movies.models import Category, Genre, Video, Episode, Comment
 
+
 class Command(BaseCommand):
     help = 'Seeds the database with initial data'
 
@@ -828,6 +829,7 @@ class Command(BaseCommand):
             slug = slugify(movie_data['title'])
 
             # Create movie
+            movie_data['poster'] = "https://m.media-amazon.com/images/M/MV5BYmU5OWM5ZTAtNjUzOC00NmUyLTgyOWMtMjlkNjdlMDAzMzU1XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg"
             movie, created = Video.objects.get_or_create(
                 slug=slug,
                 defaults={**movie_data}
@@ -893,7 +895,8 @@ class Command(BaseCommand):
 
             # Create episodes
             for episode_data in episodes_data:
-                episode_slug = slugify(f"{series.title}-s{episode_data['season_number']}e{episode_data['episode_number']}")
+                episode_slug = slugify(
+                    f"{series.title}-s{episode_data['season_number']}e{episode_data['episode_number']}")
 
                 episode, episode_created = Episode.objects.get_or_create(
                     series=series,

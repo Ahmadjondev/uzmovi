@@ -79,7 +79,21 @@
             {% if similar_videos %}
                 <div class="similar-videos">
                     <div class="section-header">
-                        <h2 class="section-title">{{ video.content_type|title }}lar</h2>
+                        <h2 class="section-title">
+                            ('movie', 'Movie'),
+                            ('series', 'Series'),
+                            ('cartoon', 'Cartoon'),
+                            ('clip', 'Clip'),
+                            {% if video.content_type == 'series' %}
+                                Seriallar
+                            {% elif video.content_type == 'cartoon' %}
+                                Multfilmlar
+                            {% elif video.content_type == 'clip' %}
+                                Kliplar
+                            {% else %}
+                                Kinolar
+                            {% endif %}
+                        </h2>
                         <a href="{% url 'content_type_list' video.content_type %}" class="view-all">Barchasini ko'rish
                             <i class="fas fa-arrow-right"></i></a>
                     </div>

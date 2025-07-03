@@ -58,8 +58,12 @@ class Video(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        # Use the same view for all content types
-        return reverse('video_detail', kwargs={'slug': self.slug})
+       def get_absolute_url(self):
+        return reverse('episode_detail', kwargs={
+            'series_slug': self.series.slug,
+            'season': self.season_number,
+            'episode': self.episode_number
+        })
 
     def get_genres_display(self):
         return ', '.join([genre.name for genre in self.genres.all()])
@@ -86,7 +90,6 @@ class Video(models.Model):
     def get_embed_url(self):
         if not self.video_url:
             return None
-        print(self.video_url)
         import re
         # YouTube
         if 'youtube.com/watch' in self.video_url or 'youtu.be/' in self.video_url:

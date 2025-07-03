@@ -15,10 +15,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
     <!-- AOS - Animate On Scroll -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
+{#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -40,7 +41,7 @@
 
 
 <!-- Main Content -->
-<main class="main-content" data-aos="fade-up" style="margin-top: 50px;">
+<main class="main-content" data-aos="fade-up">
     {% block content %}{% endblock %}
 </main>
 

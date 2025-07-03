@@ -32,6 +32,7 @@ body {
     flex: 1;
     padding-top: 120px;
     padding-bottom: 40px;
+    margin-top: 50px;
 }
 
 a {
@@ -1423,6 +1424,12 @@ a {
     }
 }
 
+@media (max-width: 782px) {
+    .main-content {
+        margin-top: 100px;
+    }
+}
+
 @media (max-width: 768px) {
     .header-top {
         flex-wrap: wrap;
@@ -1483,6 +1490,11 @@ a {
     }
 }
 
+@media (max-width: 500px) {
+    .main-content {
+        margin-top: 110px;
+    }
+}
 /* Animation classes */
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
