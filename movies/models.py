@@ -58,12 +58,16 @@ class Video(models.Model):
         return self.title
 
     def get_absolute_url(self):
-       def get_absolute_url(self):
-        return reverse('episode_detail', kwargs={
-            'series_slug': self.series.slug,
-            'season': self.season_number,
-            'episode': self.episode_number
+        # Use the same view for all content types
+        episodes = Episode.objects.filter(series=self)  # Check if this is a series
+        if episodes.exists() or self.content_type == 'series':
+            episode = episodes.first()
+            return reverse('episode_detail', kwargs={
+            'series_slug': episode.series.slug,
+            'season': episode.season_number,
+            'episode': episode.episode_number
         })
+        return reverse('video_detail', kwargs={'slug': self.slug})
 
     def get_genres_display(self):
         return ', '.join([genre.name for genre in self.genres.all()])
@@ -149,7 +153,6 @@ class Episode(models.Model):
             'season': self.season_number,
             'episode': self.episode_number
         })
-
     def increment_views(self):
         self.views_count += 1
         self.save(update_fields=['views_count'])

@@ -11,20 +11,19 @@
                 <div class="episode-selector">
                     <select class="episode-dropdown" id="episodeSelector">
                         <option value="">1-QISM</option>
-                        {% for season_num, episodes in seasons.items %}
-                            <optgroup label="Season {{ season_num }}">
-                                {% for episode in episodes %}
-                                    <option value="{{ episode.get_absolute_url }}">
-                                        {{ season_num }}-MAVSUM {{ episode.episode_number }}-QISM
+                        {% for season_num, episodes in seasons.items %} 
+                            {% for ep in episodes %}
+                                {% if ep.id != episode.id %}
+                                    <option value="{{ ep.get_absolute_url }}">
+                                         {{ ep.episode_number }}-QISM
                                     </option>
-                                {% endfor %}
-                            </optgroup>
-                        {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                    {% endfor %}
                     </select>
                 </div>
             {% endif %}
 
-            <!-- Video Player -->
             <div class="video-player-container animate__animated animate__fadeIn">
 
                 {% if video.get_embed_url %}

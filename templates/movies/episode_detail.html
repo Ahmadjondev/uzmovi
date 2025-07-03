@@ -8,21 +8,18 @@
     <section class="video-detail-section">
         <div class="container">
             <h1 class="video-title">{{ episode.series.title }} - {{ episode.title }}</h1>
-
             <!-- Episode Selector -->
             <div class="episode-selector">
                 <select class="episode-dropdown" id="episodeSelector">
-                    <option value="{{ episode.get_absolute_url }}" selected>{{ episode.season_number }}-MAVSUM {{ episode.episode_number }}-QISM</option>
-                    {% for season_num, episodes in seasons.items %}
-                        <optgroup label="Season {{ season_num }}">
+                    <option value="{{ episode.get_absolute_url }}" selected>{{ episode.episode_number }}-QISM</option>
+                    {% for season_num, episodes in seasons.items %} 
                             {% for ep in episodes %}
                                 {% if ep.id != episode.id %}
                                     <option value="{{ ep.get_absolute_url }}">
-                                        {{ season_num }}-MAVSUM {{ ep.episode_number }}-QISM
+                                         {{ ep.episode_number }}-QISM
                                     </option>
                                 {% endif %}
                             {% endfor %}
-                        </optgroup>
                     {% endfor %}
                 </select>
             </div>

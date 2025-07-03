@@ -1,19 +1,5 @@
-{#{% if video.content_type == 'series' %}#}
-{#    <div class="video-card animate__animated animate__fadeIn">#}
-{#        <a href="{% url video.episodes.first.get_absolute_url %}" class="video-card-link">#}
-{#            <div class="video-poster">#}
-{#                <img src="{{ video.get_poster_url }}" alt="{{ video.title }}" class="poster-img">#}
-{#                <div class="video-overlay">#}
-{#                    <div class="video-info">#}
-{#                        <h3 class="video-title">{{ video.title }}</h3>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </a>#}
-{#    </div>#}
-{#{% else %}#}
 <div class="video-card animate__animated animate__fadeIn">
-    <a href="{% url 'video_detail' video.slug %}" class="video-card-link">
+    <a href="{{video.get_absolute_url}}" class="video-card-link">
         <div class="video-poster">
             <img src="{{ video.get_poster_url }}" alt="{{ video.title }}" class="poster-img">
             <div class="video-overlay">
