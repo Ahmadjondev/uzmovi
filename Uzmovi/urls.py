@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
-from django.contrib.sitemaps.views import sitemap
+from django.contrib.sitemaps import views
 from movies.sitemaps import (
     StaticViewSitemap,
     CategorySitemap,
@@ -11,7 +11,7 @@ from movies.sitemaps import (
     EpisodeSitemap,
 )
 
-sitemaps_dict = {
+sitemaps = {
     "static": StaticViewSitemap,
     "categories": CategorySitemap,
     "videos": VideoSitemap,
@@ -23,12 +23,8 @@ urlpatterns = [
     path("", include("movies.urls")),
     path("users/", include("users.urls")),
     path("accounts/", include("allauth.urls")),
-    path(
-        "sitemap.xml",
-        sitemap,
-        {"sitemaps": sitemaps_dict},
-        name="django.contrib.sitemaps.views.sitemap",
-    ),
+     path('sitemap.xml/', views.index, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.index'),
+    path('sitemap-<section>.xml/', views.sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

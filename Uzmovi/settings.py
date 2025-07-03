@@ -78,18 +78,18 @@ WSGI_APPLICATION = "Uzmovi.wsgi.application"
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": "uzmovi_db",
-    #     "USER": "uzmovi",
-    #     "PASSWORD": "Uzmovi2025",
-    #     "HOST": "localhost",
-    #     "PORT": "",
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "uzmovi_db",
+        "USER": "uzmovi",
+        "PASSWORD": "Uzmovi2025",
+        "HOST": "localhost",
+        "PORT": "",
+    }
 }
 
 # Password validation
