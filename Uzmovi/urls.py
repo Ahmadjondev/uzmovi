@@ -5,14 +5,14 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib.sitemaps import views
 from movies.sitemaps import (
-    StaticViewSitemap,
+    StaticSitemap,
     CategorySitemap,
     VideoSitemap,
     EpisodeSitemap,
 )
 
 sitemaps = {
-    "static": StaticViewSitemap,
+    "static": StaticSitemap,
     "categories": CategorySitemap,
     "videos": VideoSitemap,
     "episodes": EpisodeSitemap,
