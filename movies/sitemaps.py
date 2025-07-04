@@ -2,12 +2,10 @@ from django.contrib.sitemaps import Sitemap
 from .models import Category, Video, Episode
 from django.urls import reverse
 
-class StaticViewSitemap(Sitemap):
-    priority = 0.5
-    changefreq = 'monthly'
+class StaticSitemap(Sitemap):
 
     def items(self):
-        return ['home']  # Add your static named URLs here
+        return ['home']
 
     def location(self, item):
         return reverse(item)
@@ -29,6 +27,8 @@ class VideoSitemap(Sitemap):
     def items(self):
         return Video.objects.all()
 
+    def lastmod(self, obj):
+        return obj.updated_at
     def location(self, obj):
         return obj.get_absolute_url()
 
@@ -39,5 +39,8 @@ class EpisodeSitemap(Sitemap):
     def items(self):
         return Episode.objects.all()
 
+    def lastmod(self, obj):
+        return obj.updated_at
+    
     def location(self, obj):
         return obj.get_absolute_url()
