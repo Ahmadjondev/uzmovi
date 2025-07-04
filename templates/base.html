@@ -17,7 +17,7 @@
     </title>
     <meta property="og:title" content="{% block og_title %}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://{{request.META_HTTP_POST}}{% load static %}{% static 'images/logo.jpg' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://{{request.META_HTTP_POST}}{% static 'images/logo.jpg' %}{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Football & Movie Hub"> {# Your site's name #}
