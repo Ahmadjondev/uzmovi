@@ -45,33 +45,12 @@
             </div>
           </div>
         {% endif %}
-
-        {% if video.video_file %}
-          <div class="video-controls">
-            <button class="play-button"><i class="fas fa-play"></i></button>
-            <div class="progress-bar">
-              <div class="progress-filled"></div>
-            </div>
-            <button class="mute-button"><i class="fas fa-volume-up"></i></button>
-            <button class="fullscreen-button"><i class="fas fa-expand"></i></button>
-          </div>
-        {% endif %}
       </div>
 
       <!-- Video Info -->
       <div class="video-info-container">
         <div class="video-description">
           <p>{{ video.description }}</p>
-          {# <div class="video-meta"> #}
-          {# <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span> #}
-          {# <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span> #}
-          {# {% if video.rating > 0 %} #}
-          {# <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span> #}
-          {# {% endif %} #}
-          {# {% if video.director %} #}
-          {# <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span> #}
-          {# {% endif %} #}
-          {# </div> #}
           {% if video.genres.all %}
             <div class="video-genres">
               {% for genre in video.genres.all %}
@@ -87,7 +66,7 @@
         <div class="similar-videos">
           <div class="section-header">
             <h2 class="section-title">
-              ('movie', 'Movie'), ('series', 'Series'), ('cartoon', 'Cartoon'), ('clip', 'Clip'),{% if video.content_type == 'series' %}
+              {% if video.content_type == 'series' %}
                 Seriallar
               {% elif video.content_type == 'cartoon' %}
                 Multfilmlar
