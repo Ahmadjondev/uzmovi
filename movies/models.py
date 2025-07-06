@@ -58,7 +58,7 @@ class Video(models.Model):
     def get_absolute_url(self):
         # Use the same view for all content types
         episodes = Episode.objects.filter(series=self)  # Check if this is a series
-        if episodes.exists() or self.content_type == 'series':
+        if episodes.exists() and self.content_type == 'series':
             episode = episodes.first()
             return reverse('episode_detail', kwargs={
             'series_slug': episode.series.slug,

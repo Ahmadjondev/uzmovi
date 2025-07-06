@@ -1,312 +1,316 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ video.title }} - UZMOVI.ASIA{% endblock %}
+{% block title %}
+  {{ video.title }} - UZMOVI.ASIA
+{% endblock %}
 
 {% block content %}
-    <section class="video-detail-section">
-        <div class="container">
-            <h1 class="video-title">{{ video.title }}</h1>
-            {% if video.content_type == 'series' %}
-                <!-- Series Episode Selector -->
-                <div class="episode-selector">
-                    <select class="episode-dropdown" id="episodeSelector">
-                        <option value="">1-QISM</option>
-                        {% for season_num, episodes in seasons.items %} 
-                            {% for ep in episodes %}
-                                {% if ep.id != episode.id %}
-                                    <option value="{{ ep.get_absolute_url }}">
-                                         {{ ep.episode_number }}-QISM
-                                    </option>
-                                {% endif %}
-                            {% endfor %}
-                    {% endfor %}
-                    </select>
-                </div>
-            {% endif %}
-
-            <div class="video-player-container animate__animated animate__fadeIn">
-
-                {% if video.get_embed_url %}
-                    <iframe src="{{ video.get_embed_url }}" frameborder="0" allowfullscreen
-                            class="video-player"></iframe>
-                {% else %}
-                    <div class="video-placeholder">
-                        <img src="{{ video.get_backdrop_url }}" alt="{{ video.title }}" class="backdrop-img">
-                        <div class="placeholder-overlay">
-                            <p>Video not available</p>
-                        </div>
-                    </div>
+  <section class="video-detail-section">
+    <!-- Yandex.RTB R-A-15168558-3 -->
+    <div id="yandex_rtb_R-A-15168558-3"></div>
+    <script>
+      window.yaContextCb.push(() => {
+        Ya.Context.AdvManager.render({
+          blockId: 'R-A-15168558-3',
+          renderTo: 'yandex_rtb_R-A-15168558-3'
+        })
+      })
+    </script>
+    <div class="container">
+      <h1 class="video-title">{{ video.title }}</h1>
+      {% if video.content_type == 'series' %}
+        <!-- Series Episode Selector -->
+        <div class="episode-selector">
+          <select class="episode-dropdown" id="episodeSelector">
+            <option value="">1-QISM</option>
+            {% for season_num, episodes in seasons.items %}
+              {% for ep in episodes %}
+                {% if ep.id != episode.id %}
+                  <option value="{{ ep.get_absolute_url }}">{{ ep.episode_number }}-QISM</option>
                 {% endif %}
-
-                {% if video.video_file %}
-                    <div class="video-controls">
-                        <button class="play-button"><i class="fas fa-play"></i></button>
-                        <div class="progress-bar">
-                            <div class="progress-filled"></div>
-                        </div>
-                        <button class="mute-button"><i class="fas fa-volume-up"></i></button>
-                        <button class="fullscreen-button"><i class="fas fa-expand"></i></button>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Video Info -->
-            <div class="video-info-container">
-                <div class="video-description">
-                    <p>{{ video.description }}</p>
-                    {#                    <div class="video-meta">#}
-                    {#                        <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span>#}
-                    {#                        <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span>#}
-                    {#                        {% if video.rating > 0 %}#}
-                    {#                            <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span>#}
-                    {#                        {% endif %}#}
-                    {#                        {% if video.director %}#}
-                    {#                            <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span>#}
-                    {#                        {% endif %}#}
-                    {#                    </div>#}
-                    {% if video.genres.all %}
-                        <div class="video-genres">
-                            {% for genre in video.genres.all %}
-                                <span class="genre-tag">{{ genre.name }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Similar Videos -->
-            {% if similar_videos %}
-                <div class="similar-videos">
-                    <div class="section-header">
-                        <h2 class="section-title">
-                            ('movie', 'Movie'),
-                            ('series', 'Series'),
-                            ('cartoon', 'Cartoon'),
-                            ('clip', 'Clip'),
-                            {% if video.content_type == 'series' %}
-                                Seriallar
-                            {% elif video.content_type == 'cartoon' %}
-                                Multfilmlar
-                            {% elif video.content_type == 'clip' %}
-                                Kliplar
-                            {% else %}
-                                Kinolar
-                            {% endif %}
-                        </h2>
-                        <a href="{% url 'content_type_list' video.content_type %}" class="view-all">Barchasini ko'rish
-                            <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="video-slider">
-                        <div class="slider-arrow prev-arrow">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="video-grid">
-                            {% for similar in similar_videos %}
-                                {% include 'movies/includes/video_card.html' with video=similar %}
-                            {% endfor %}
-                        </div>
-                        <div class="slider-arrow next-arrow">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-
-            <!-- Comments Section -->
-            <div class="comments-section">
-                <h3 class="comments-title">Izohlar</h3>
-
-                <!-- Comment Form -->
-                {% if user.is_authenticated %}
-                    <div class="comment-form-container">
-                        <form method="post" action="{% url 'add_comment_video' video.slug %}" class="comment-form">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <input type="text" name="name" placeholder="Ismingiz" class="form-control"
-                                       value="{{ user.username }}" readonly>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" name="email" placeholder="E-mail" class="form-control"
-                                       value="{{ user.email }}" readonly>
-                            </div>
-                            <div class="form-group">
-                                {{ comment_form.content }}
-                                <input type="hidden" name="parent_id" id="parentId" value="">
-                            </div>
-                            <div class="form-actions">
-                                <div class="captcha">
-                                    <img src="/static/img/captcha.png" alt="Captcha" class="captcha-img">
-                                </div>
-                                <input type="text" name="captcha" placeholder="Rasmdagi kodni yozing"
-                                       class="captcha-input">
-                                <button type="submit" class="submit-button">Yuborish</button>
-                            </div>
-                        </form>
-                    </div>
-                {% else %}
-                    <div class="login-to-comment">
-                        <p>Izoh qoldirish uchun <a href="{% url 'account_login' %}">tizimga kiring</a> yoki <a
-                                href="{% url 'account_signup' %}">ro'yxatdan o'ting</a>.</p>
-                    </div>
-                {% endif %}
-
-                <!-- Comments List -->
-                <div class="comments-list">
-                    {% if comments %}
-                        {% for comment in comments %}
-                            {% include 'movies/includes/comment.html' with comment=comment %}
-                        {% endfor %}
-                    {% else %}
-                        <div class="no-comments">
-                            <p>Hozircha izohlar yo'q. Birinchi bo'lib izoh qoldiring!</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
+              {% endfor %}
+            {% endfor %}
+          </select>
         </div>
-    </section>
+      {% endif %}
+
+      <div class="video-player-container animate__animated animate__fadeIn">
+        {% if video.get_embed_url %}
+          <iframe src="{{ video.get_embed_url }}" frameborder="0" allowfullscreen class="video-player"></iframe>
+        {% else %}
+          <div class="video-placeholder">
+            <img src="{{ video.get_backdrop_url }}" alt="{{ video.title }}" class="backdrop-img" />
+            <div class="placeholder-overlay">
+              <p>Video not available</p>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if video.video_file %}
+          <div class="video-controls">
+            <button class="play-button"><i class="fas fa-play"></i></button>
+            <div class="progress-bar">
+              <div class="progress-filled"></div>
+            </div>
+            <button class="mute-button"><i class="fas fa-volume-up"></i></button>
+            <button class="fullscreen-button"><i class="fas fa-expand"></i></button>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Video Info -->
+      <div class="video-info-container">
+        <div class="video-description">
+          <p>{{ video.description }}</p>
+          {# <div class="video-meta"> #}
+          {# <span class="meta-item"><i class="fas fa-calendar"></i> {{ video.release_year }}</span> #}
+          {# <span class="meta-item"><i class="fas fa-clock"></i> {{ video.duration }}</span> #}
+          {# {% if video.rating > 0 %} #}
+          {# <span class="meta-item"><i class="fas fa-star"></i> {{ video.rating }}</span> #}
+          {# {% endif %} #}
+          {# {% if video.director %} #}
+          {# <span class="meta-item"><i class="fas fa-user"></i> {{ video.director }}</span> #}
+          {# {% endif %} #}
+          {# </div> #}
+          {% if video.genres.all %}
+            <div class="video-genres">
+              {% for genre in video.genres.all %}
+                <span class="genre-tag">{{ genre.name }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Similar Videos -->
+      {% if similar_videos %}
+        <div class="similar-videos">
+          <div class="section-header">
+            <h2 class="section-title">
+              ('movie', 'Movie'), ('series', 'Series'), ('cartoon', 'Cartoon'), ('clip', 'Clip'),{% if video.content_type == 'series' %}
+                Seriallar
+              {% elif video.content_type == 'cartoon' %}
+                Multfilmlar
+              {% elif video.content_type == 'clip' %}
+                Kliplar
+              {% else %}
+                Kinolar
+              {% endif %}
+            </h2>
+            <a href="{% url 'content_type_list' video.content_type %}" class="view-all">
+              Barchasini ko'rish
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="video-slider">
+            <div class="slider-arrow prev-arrow">
+              <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="video-grid">
+              {% for similar in similar_videos %}
+                {% include 'movies/includes/video_card.html' with video=similar %}
+              {% endfor %}
+            </div>
+            <div class="slider-arrow next-arrow">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Comments Section -->
+      <div class="comments-section">
+        <h3 class="comments-title">Izohlar</h3>
+
+        <!-- Comment Form -->
+        {% if user.is_authenticated %}
+          <div class="comment-form-container">
+            <form method="post" action="{% url 'add_comment_video' video.slug %}" class="comment-form">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="text" name="name" placeholder="Ismingiz" class="form-control" value="{{ user.username }}" readonly />
+              </div>
+              <div class="form-group">
+                <input type="email" name="email" placeholder="E-mail" class="form-control" value="{{ user.email }}" readonly />
+              </div>
+              <div class="form-group">
+                {{ comment_form.content }}
+                <input type="hidden" name="parent_id" id="parentId" value="" />
+              </div>
+              <div class="form-actions">
+                <div class="captcha">
+                  <img src="/static/img/captcha.png" alt="Captcha" class="captcha-img" />
+                </div>
+                <input type="text" name="captcha" placeholder="Rasmdagi kodni yozing" class="captcha-input" />
+                <button type="submit" class="submit-button">Yuborish</button>
+              </div>
+            </form>
+          </div>
+        {% else %}
+          <div class="login-to-comment">
+            <p>
+              Izoh qoldirish uchun <a href="{% url 'account_login' %}">tizimga kiring</a> yoki <a href="{% url 'account_signup' %}">ro'yxatdan o'ting</a>.
+            </p>
+          </div>
+        {% endif %}
+
+        <!-- Comments List -->
+        <div class="comments-list">
+          {% if comments %}
+            {% for comment in comments %}
+              {% include 'movies/includes/comment.html' with comment=comment %}
+            {% endfor %}
+          {% else %}
+            <div class="no-comments">
+              <p>Hozircha izohlar yo'q. Birinchi bo'lib izoh qoldiring!</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block extra_js %}
-    <script>
-        // Episode selector functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const episodeSelector = document.getElementById('episodeSelector');
-            if (episodeSelector) {
-                episodeSelector.addEventListener('change', function () {
-                    if (this.value) {
-                        window.location.href = this.value;
-                    }
-                });
+  <script>
+    // Episode selector functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const episodeSelector = document.getElementById('episodeSelector')
+      if (episodeSelector) {
+        episodeSelector.addEventListener('change', function () {
+          if (this.value) {
+            window.location.href = this.value
+          }
+        })
+      }
+    
+      // Comment reply functionality
+      const replyButtons = document.querySelectorAll('.reply-button')
+      const parentIdInput = document.getElementById('parentId')
+      const commentForm = document.querySelector('.comment-form')
+    
+      replyButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+          const commentId = this.getAttribute('data-comment-id')
+          parentIdInput.value = commentId
+    
+          // Scroll to comment form
+          commentForm.scrollIntoView({ behavior: 'smooth' })
+    
+          // Focus on comment textarea
+          const textarea = commentForm.querySelector('textarea')
+          textarea.focus()
+    
+          // Add reply indicator
+          const replyingTo = document.createElement('div')
+          replyingTo.className = 'replying-to'
+          replyingTo.innerHTML = `<p>Javob berish: <span>${this.getAttribute('data-username')}</span> <button type="button" class="cancel-reply">Bekor qilish</button></p>`
+    
+          // Remove existing reply indicator if any
+          const existingIndicator = commentForm.querySelector('.replying-to')
+          if (existingIndicator) {
+            existingIndicator.remove()
+          }
+    
+          // Add new indicator
+          commentForm.insertBefore(replyingTo, commentForm.firstChild)
+    
+          // Add cancel reply functionality
+          const cancelButton = replyingTo.querySelector('.cancel-reply')
+          cancelButton.addEventListener('click', function () {
+            parentIdInput.value = ''
+            replyingTo.remove()
+          })
+        })
+      })
+    
+      // Like/Dislike functionality
+      const likeButtons = document.querySelectorAll('.like-button')
+      const dislikeButtons = document.querySelectorAll('.dislike-button')
+    
+      likeButtons.forEach((button) => {
+        button.addEventListener('click', function (e) {
+          e.preventDefault()
+          const commentId = this.getAttribute('data-comment-id')
+          const url = `/comment/like/${commentId}/`
+    
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'X-Requested-With': 'XMLHttpRequest'
             }
-
-            // Comment reply functionality
-            const replyButtons = document.querySelectorAll('.reply-button');
-            const parentIdInput = document.getElementById('parentId');
-            const commentForm = document.querySelector('.comment-form');
-
-            replyButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const commentId = this.getAttribute('data-comment-id');
-                    parentIdInput.value = commentId;
-
-                    // Scroll to comment form
-                    commentForm.scrollIntoView({behavior: 'smooth'});
-
-                    // Focus on comment textarea
-                    const textarea = commentForm.querySelector('textarea');
-                    textarea.focus();
-
-                    // Add reply indicator
-                    const replyingTo = document.createElement('div');
-                    replyingTo.className = 'replying-to';
-                    replyingTo.innerHTML = `<p>Javob berish: <span>${this.getAttribute('data-username')}</span> <button type="button" class="cancel-reply">Bekor qilish</button></p>`;
-
-                    // Remove existing reply indicator if any
-                    const existingIndicator = commentForm.querySelector('.replying-to');
-                    if (existingIndicator) {
-                        existingIndicator.remove();
-                    }
-
-                    // Add new indicator
-                    commentForm.insertBefore(replyingTo, commentForm.firstChild);
-
-                    // Add cancel reply functionality
-                    const cancelButton = replyingTo.querySelector('.cancel-reply');
-                    cancelButton.addEventListener('click', function () {
-                        parentIdInput.value = '';
-                        replyingTo.remove();
-                    });
-                });
-            });
-
-            // Like/Dislike functionality
-            const likeButtons = document.querySelectorAll('.like-button');
-            const dislikeButtons = document.querySelectorAll('.dislike-button');
-
-            likeButtons.forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const commentId = this.getAttribute('data-comment-id');
-                    const url = `/comment/like/${commentId}/`;
-
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': getCookie('csrftoken'),
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            const likesCount = this.querySelector('.likes-count');
-                            const dislikesCount = document.querySelector(`.dislike-button[data-comment-id="${commentId}"] .dislikes-count`);
-
-                            likesCount.textContent = data.likes_count;
-                            dislikesCount.textContent = data.dislikes_count;
-
-                            if (data.liked) {
-                                this.classList.add('active');
-                            } else {
-                                this.classList.remove('active');
-                            }
-
-                            // Remove active class from dislike button if needed
-                            const dislikeButton = document.querySelector(`.dislike-button[data-comment-id="${commentId}"]`);
-                            dislikeButton.classList.remove('active');
-                        });
-                });
-            });
-
-            dislikeButtons.forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const commentId = this.getAttribute('data-comment-id');
-                    const url = `/comment/dislike/${commentId}/`;
-
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': getCookie('csrftoken'),
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            const dislikesCount = this.querySelector('.dislikes-count');
-                            const likesCount = document.querySelector(`.like-button[data-comment-id="${commentId}"] .likes-count`);
-
-                            dislikesCount.textContent = data.dislikes_count;
-                            likesCount.textContent = data.likes_count;
-
-                            if (data.disliked) {
-                                this.classList.add('active');
-                            } else {
-                                this.classList.remove('active');
-                            }
-
-                            // Remove active class from like button if needed
-                            const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`);
-                            likeButton.classList.remove('active');
-                        });
-                });
-            });
-
-            // Helper function to get CSRF token
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const likesCount = this.querySelector('.likes-count')
+              const dislikesCount = document.querySelector(`.dislike-button[data-comment-id="${commentId}"] .dislikes-count`)
+    
+              likesCount.textContent = data.likes_count
+              dislikesCount.textContent = data.dislikes_count
+    
+              if (data.liked) {
+                this.classList.add('active')
+              } else {
+                this.classList.remove('active')
+              }
+    
+              // Remove active class from dislike button if needed
+              const dislikeButton = document.querySelector(`.dislike-button[data-comment-id="${commentId}"]`)
+              dislikeButton.classList.remove('active')
+            })
+        })
+      })
+    
+      dislikeButtons.forEach((button) => {
+        button.addEventListener('click', function (e) {
+          e.preventDefault()
+          const commentId = this.getAttribute('data-comment-id')
+          const url = `/comment/dislike/${commentId}/`
+    
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'X-Requested-With': 'XMLHttpRequest'
             }
-        });
-    </script>
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const dislikesCount = this.querySelector('.dislikes-count')
+              const likesCount = document.querySelector(`.like-button[data-comment-id="${commentId}"] .likes-count`)
+    
+              dislikesCount.textContent = data.dislikes_count
+              likesCount.textContent = data.likes_count
+    
+              if (data.disliked) {
+                this.classList.add('active')
+              } else {
+                this.classList.remove('active')
+              }
+    
+              // Remove active class from like button if needed
+              const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`)
+              likeButton.classList.remove('active')
+            })
+        })
+      })
+    
+      // Helper function to get CSRF token
+      function getCookie(name) {
+        let cookieValue = null
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';')
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim()
+            if (cookie.substring(0, name.length + 1) === name + '=') {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+              break
+            }
+          }
+        }
+        return cookieValue
+      }
+    })
+  </script>
 {% endblock %}
